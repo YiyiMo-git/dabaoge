@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>大宝哥智能体</title>
+<style>
+  :root{
+    /* 核心色彩 */
+    --bg: #09090b;
+    --text: #fafafa;
+    --muted: #a1a1aa;
+    --border-glass: rgba(255, 255, 255, 0.08);
+    --bg-glass: rgba(18, 18, 20, 0.6);
+    --bg-glass-hover: rgba(30, 30, 33, 0.8);
+    --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    background-color: var(--bg);
+    background-image: 
+      radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 40%);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+  }
+  ::selection{background:rgba(255,255,255,0.2);}
+
+  /* ---------- 顶部栏 (磨砂) ---------- */
+  .topbar{
+    height: 56px; flex: 0 0 56px;
+    border-bottom: 1px solid var(--border-glass);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px;
+    background: rgba(9, 9, 11, 0.5);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    z-index: 10;
+  }
+  .topbar-left{display:flex;align-items:center;gap:10px;font-size:14px;}
+  .logo{
+    width: 26px; height: 26px; border-radius: 8px;
+    background: var(--text); color: var(--bg);
+    font-weight: 800; font-size: 15px;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 12px rgba(255,255,255,0.2);
+  }
+  .brand-name{font-weight: 600; letter-spacing: .3px;}
+  .topbar-right{font-size: 11px; color: var(--muted); font-family: ui-monospace, Menlo, Consolas, monospace;}
+
+  /* ---------- 聊天区 ---------- */
+  .chat{flex:1;overflow-y:auto;padding:32px 22px 180px;}
+  .chat-inner{max-width: 800px; margin: 0 auto;}
+
+  .msg{display:flex;gap:12px;margin-bottom:24px;align-items:flex-start;}
+  .msg.user{justify-content:flex-end;}
+  .msg .body{max-width:86%;min-width:0;}
+  .msg.user .body{display:flex;flex-direction:column;align-items:flex-end;}
+
+  .avatar{
+    width: 28px; height: 28px; flex: 0 0 28px; border-radius: 8px;
+    background: var(--text); color: var(--bg);
+    font-weight: 800; font-size: 13px;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 2px;
+  }
+
+  .meta{
+    font-size: 10.5px; color: #71717a; margin-bottom: 6px;
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: .03em;
+  }
+
+  .bubble{white-space:pre-wrap;word-break:break-word;line-height:1.68;font-size:14.5px;}
+  
+  /* 用户气泡(磨砂) */
+  .msg.user .bubble{
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px 16px 4px 16px;
+    padding: 10px 16px;
+    color: var(--text);
+  }
+  .msg.ai .bubble{color:#e4e4e7;}
+
+  .typing{display:flex;gap:4px;padding:6px 2px;}
+  .typing span{
+    width:6px;height:6px;border-radius:50%;background:var(--text);
+    opacity:.35;animation:blink 1.2s infinite;
+  }
+  .typing span:nth-child(2){animation-delay:.2s}
+  .typing span:nth-child(3){animation-delay:.4s}
+  @keyframes blink{0%,80%,100%{opacity:.2;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
+
+  /* ---------- 底部控制区 ---------- */
+  .bottom-wrapper{
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(180deg, transparent 0%, var(--bg) 40%);
+    padding: 20px 22px 28px;
+    display: flex; flex-direction: column; align-items: center;
+    pointer-events: none;
+  }
+  .bottom-inner{
+    width: 100%; max-width: 800px;
+    position: relative;
+    pointer-events: auto;
+  }
+
+  /* 悬浮控制面板 (磨砂玻璃) */
+  .control-panel{
+    position: absolute;
+    bottom: calc(100% + 14px);
+    right: 0;
+    background: var(--bg-glass);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 18px;
+    width: 300px;
+    box-shadow: var(--shadow-glass);
+    display: flex; flex-direction: column; gap: 16px;
+    transform: translateY(10px) scale(0.98);
+    opacity: 0; visibility: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 50;
+    transform-origin: bottom right;
+  }
+  .control-panel.show{
+    transform: translateY(0) scale(1);
+    opacity: 1; visibility: visible;
+  }
+
+  .panel-header{
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .panel-strength-val{
+    font-size: 16px; font-weight: 600; color: var(--text);
+    text-transform: capitalize; letter-spacing: 1px;
+  }
+  
+  /* 模型下拉触发按钮 */
+  .model-trigger-wrapper {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+  }
+  .panel-model-trigger{
+    font-size: 13px; color: var(--muted);
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+    padding: 8px 12px; border-radius: 8px; transition: all 0.15s;
+    width: 100%;
+    border: 1px solid transparent;
+  }
+  .panel-model-trigger:hover{
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text);
+  }
+  .panel-model-trigger.open {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: var(--border-glass);
+    color: var(--text);
+  }
+  .panel-model-trigger svg {
+    transition: transform 0.2s;
+  }
+  .panel-model-trigger.open svg {
+    transform: rotate(90deg); /* 箭头旋转向下 */
+  }
+
+  /* 展开的模型列表 (磨砂) */
+  .model-dropdown{
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    margin-top: 8px;
+    background: rgba(30, 30, 33, 0.8);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border-glass);
+    border-radius: 10px;
+    padding: 6px;
+    display: none;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    z-index: 20;
+  }
+  .model-dropdown.show{display:block;}
+  .model-option{
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--muted);
+    transition: all 0.15s;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .model-option:hover{background: rgba(255, 255, 255, 0.08); color: var(--text);}
+  .model-option.selected{color: var(--text); background: rgba(255, 255, 255, 0.12);}
+  .model-option .check{opacity:0; color: var(--text); font-weight: bold; transform: scale(0.8); transition: all 0.2s;}
+  .model-option.selected .check{opacity:1; transform: scale(1);}
+
+  /* 滑块美化 */
+  .slider-container{
+    position: relative;
+    height: 28px;
+    display: flex; align-items: center;
+    padding: 0 8px;
+  }
+  input[type=range]{
+    -webkit-appearance: none;
+    width: 100%;
+    background: transparent;
+    margin: 0;
+    position: relative; z-index: 2;
+  }
+  input[type=range]:focus{outline:none;}
+  
+  /* 轨道 */
+  input[type=range]::-webkit-slider-runnable-track{
+    width: 100%; height: 8px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 99px;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.5);
+  }
+  /* 滑块按钮 (带发光) */
+  input[type=range]::-webkit-slider-thumb{
+    height: 24px; width: 24px;
+    border-radius: 50%;
+    background: #ffffff;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.4), 0 2px 6px rgba(0,0,0,0.3);
+    transition: transform 0.1s, box-shadow 0.1s;
+  }
+  input[type=range]::-webkit-slider-thumb:hover{
+    transform: scale(1.1);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.6), 0 2px 8px rgba(0,0,0,0.4);
+  }
+  
+  /* 已滑过的部分 (渐变发光) */
+  .slider-track-fill{
+    position: absolute;
+    top: 50%; left: 8px;
+    height: 8px;
+    background: linear-gradient(90deg, #71717a 0%, #ffffff 100%);
+    border-radius: 99px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+    width: 50%;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  }
+
+  /* 底部下拉按钮 */
+  .effort-select{
+    width: 100%;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    border-radius: 10px;
+    padding: 10px 14px;
+    color: var(--muted);
+    font-size: 13px;
+    display: flex; align-items: center; justify-content: space-between;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .effort-select:hover{background: rgba(255, 255, 255, 0.08); color: var(--text);}
+
+  /* 输入框行 (磨砂玻璃) */
+  .input-row{
+    display: flex; gap: 12px; align-items: center;
+    background: var(--bg-glass);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass);
+    border-radius: 16px;
+    padding: 12px 12px 12px 18px;
+    transition: all 0.2s;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .input-row:focus-within{
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(24, 24, 27, 0.8);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+  }
+  textarea{
+    flex: 1; background: transparent; border: none; outline: none;
+    color: var(--text); resize: none; font: inherit; line-height: 1.55;
+    max-height: 150px; overflow-y: auto; padding: 6px 0;
+  }
+  textarea::placeholder{color: #52525b;}
+
+  .input-actions{
+    display: flex; align-items: center; gap: 10px;
+  }
+  
+  .icon-btn{
+    background: transparent; border: none;
+    color: var(--muted); cursor: pointer;
+    width: 34px; height: 34px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px; transition: all 0.15s;
+  }
+  .icon-btn:hover{background: rgba(255,255,255,0.1); color: var(--text);}
+  .icon-btn.active{color: var(--text);}
+
+  .send-btn{
+    width: 34px; height: 34px;
+    border: none; border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1); color: var(--muted);
+    font-size: 16px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s; cursor: not-allowed;
+  }
+  .send-btn.ready{
+    background: var(--text); color: var(--bg); cursor: pointer;
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+  }
+  .send-btn.ready:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+  }
+
+  /* 滚动条 */
+  ::-webkit-scrollbar{width: 8px; height: 8px;}
+  ::-webkit-scrollbar-thumb{background: rgba(255,255,255,0.1); border-radius: 6px;}
+  ::-webkit-scrollbar-thumb:hover{background: rgba(255,255,255,0.2);}
+  ::-webkit-scrollbar-track{background: transparent;}
+</style>
+</head>
+<body>
+
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo">大</div>
+      <div class="brand-name">大宝哥智能体</div>
+    </div>
+    <div class="topbar-right">胡说指数 100%</div>
+  </header>
+
+  <!-- 聊天区 -->
+  <div class="chat" id="chat">
+    <div class="chat-inner" id="chatInner"></div>
+  </div>
+
+  <!-- 底部控制与输入 -->
+  <div class="bottom-wrapper">
+    <div class="bottom-inner">
+      
+      <!-- 悬浮控制面板 -->
+      <div class="control-panel" id="controlPanel">
+        <div class="panel-header">
+          <div class="panel-strength-val" id="panelStrengthVal">High</div>
+          
+          <div class="model-trigger-wrapper">
+            <div class="panel-model-trigger" id="modelTrigger">
+              <span id="panelModelName">大宝哥R1</span> 
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+            </div>
+            
+            <!-- 模型下拉菜单（向下展开） -->
+            <div class="model-dropdown" id="modelDropdown">
+              <div class="model-option" data-model="大宝哥R1">大宝哥R1 <span class="check">✓</span></div>
+              <div class="model-option" data-model="大宝哥v4">大宝哥v4 <span class="check">✓</span></div>
+              <div class="model-option" data-model="大宝哥pro">大宝哥pro <span class="check">✓</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 滑块 -->
+        <div class="slider-container">
+          <div class="slider-track-fill" id="sliderFill"></div>
+          <input type="range" id="strengthSlider" min="0" max="2" step="1" value="1">
+        </div>
+
+        <div class="effort-select" id="effortSelect">
+          <span>Select effort</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+
+      <!-- 输入框区域 -->
+      <div class="input-row">
+        <textarea id="input" rows="1" placeholder="问问大宝哥…… 试试「42=多少」或「67」"></textarea>
+        
+        <div class="input-actions">
+          <button class="icon-btn" id="togglePanel" title="设置模型与强度">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+          </button>
+          <button class="send-btn" id="send" title="发送">↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* ============ 状态与配置 ============ */
+const state = {
+  model: '大宝哥R1',
+  strength: 'high', // light, high, max
+  busy: false
+};
+
+const STRENGTHS = ['light', 'high', 'max'];
+
+/* ============ 元素获取 ============ */
+const chatInner = document.getElementById('chatInner');
+const chatBox = document.getElementById('chat');
+const input = document.getElementById('input');
+const sendBtn = document.getElementById('send');
+const togglePanelBtn = document.getElementById('togglePanel');
+const controlPanel = document.getElementById('controlPanel');
+const modelTrigger = document.getElementById('modelTrigger');
+const modelDropdown = document.getElementById('modelDropdown');
+const panelModelName = document.getElementById('panelModelName');
+const panelStrengthVal = document.getElementById('panelStrengthVal');
+const strengthSlider = document.getElementById('strengthSlider');
+const sliderFill = document.getElementById('sliderFill');
+const effortSelect = document.getElementById('effortSelect');
+
+/* ============ 初始化 UI 状态 ============ */
+function updateUI() {
+  panelModelName.textContent = state.model;
+  panelStrengthVal.textContent = state.strength;
+  
+  // 更新滑块位置 (0:light, 1:high, 2:max)
+  const idx = STRENGTHS.indexOf(state.strength);
+  strengthSlider.value = idx;
+  
+  // 滑块填充宽度计算 (考虑左右 padding)
+  const percent = (idx / 2) * 100;
+  sliderFill.style.width = `calc(${percent}% - ${idx === 0 ? '0px' : idx === 2 ? '16px' : '8px'})`;
+
+  // 更新模型下拉高亮
+  document.querySelectorAll('.model-option').forEach(el => {
+    el.classList.toggle('selected', el.dataset.model === state.model);
+  });
+
+  // 更新输入框右侧发送按钮状态
+  const hasText = input.value.trim().length > 0;
+  sendBtn.classList.toggle('ready', hasText && !state.busy);
+}
+
+/* ============ 面板交互逻辑 ============ */
+// 主面板开关
+togglePanelBtn.addEventListener('click', (e) => {
+  e.stopPropagation();
+  controlPanel.classList.toggle('show');
+  if (!controlPanel.classList.contains('show')) {
+    modelDropdown.classList.remove('show');
+    modelTrigger.classList.remove('open');
+  }
+});
+
+// 点击外部关闭面板或下拉
+document.addEventListener('click', (e) => {
+  if (!controlPanel.contains(e.target) && e.target !== togglePanelBtn && !togglePanelBtn.contains(e.target)) {
+    controlPanel.classList.remove('show');
+    modelDropdown.classList.remove('show');
+    modelTrigger.classList.remove('open');
+  }
+});
+
+// 模型下拉展开/收起
+modelTrigger.addEventListener('click', (e) => {
+  e.stopPropagation();
+  modelDropdown.classList.toggle('show');
+  modelTrigger.classList.toggle('open');
+});
+
+// 选择模型
+document.querySelectorAll('.model-option').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    state.model = el.dataset.model;
+    modelDropdown.classList.remove('show');
+    modelTrigger.classList.remove('open');
+    updateUI();
+  });
+});
+
+// 滑动条改变强度
+strengthSlider.addEventListener('input', (e) => {
+  state.strength = STRENGTHS[e.target.value];
+  updateUI();
+});
+
+// 底部 Select effort 点击循环切换
+effortSelect.addEventListener('click', () => {
+  const idx = STRENGTHS.indexOf(state.strength);
+  const nextIdx = (idx + 1) % 3;
+  state.strength = STRENGTHS[nextIdx];
+  updateUI();
+});
+
+/* ============ 核心：胡说引擎 ============ */
+const SUBJ = [
+  '这个问题','你这个提问','从拓扑学角度看','在四维流形的框架下',
+  '经过大宝哥三次迭代','依据大宝哥第一定律','抛开事实不谈',
+  '从玄学层面分析','如果我没记错的话','我掐指一算'
+];
+const VERB = [
+  '其实是','本质上是','等价于','可以化简为',
+  '必然收敛于','对应着','就是','约等于'
+];
+const OBJ = [
+  '一只薛定谔的猫','七个半成品','反向旋转的螺丝钉','大宝哥牌计算器',
+  '量子泡沫里的二维码','一个会呼吸的句号','零下三度的混沌',
+  '被折叠的时间轴','三斤半的逻辑','发霉的三角函数'
+];
+const TAIL = [
+  '。','，这很合理。','，懂了吗？','，别问为什么。',
+  '，这就是真相。','，我编的。','，以上全部作废。'
+];
+const pick = a => a[Math.floor(Math.random()*a.length)];
+
+function sentence(){
+  return pick(SUBJ) + pick(VERB) + pick(OBJ) + pick(TAIL);
+}
+
+function nonsense(){
+  const n = state.strength === 'light' ? 1
+          : state.strength === 'high'  ? 2
+          : 4;
+  let out = [];
+  for(let i=0;i<n;i++) out.push(sentence());
+  if(state.strength === 'max'){
+    out.push('【胡说指数】' + (90 + Math.floor(Math.random()*10)) + '%');
+  }
+  return out.join(' ');
+}
+
+function generateReply(text){
+  if(text.includes('42')) return '42=7';
+  if(text.includes('67')) return '6767676767676767';
+  return nonsense();
+}
+
+/* ============ 聊天渲染 ============ */
+function scrollDown(){
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function addMessage(role, text){
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ' + (role === 'user' ? 'user' : 'ai');
+
+  if(role === 'ai'){
+    const av = document.createElement('div');
+    av.className = 'avatar';
+    av.textContent = '大';
+    wrap.appendChild(av);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'body';
+
+  if(role === 'ai'){
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = state.model + ' · ' + state.strength;
+    body.appendChild(meta);
+  }
+
+  const bubble = document.createElement('div');
+  bubble.className = 'bubble';
+  bubble.textContent = text;
+  body.appendChild(bubble);
+
+  wrap.appendChild(body);
+  chatInner.appendChild(wrap);
+  scrollDown();
+  return bubble;
+}
+
+function showTyping(){
+  const wrap = document.createElement('div');
+  wrap.className = 'msg ai';
+  wrap.id = 'typingMsg';
+
+  const av = document.createElement('div');
+  av.className = 'avatar';
+  av.textContent = '大';
+  wrap.appendChild(av);
+
+  const body = document.createElement('div');
+  body.className = 'body';
+
+  const meta = document.createElement('div');
+  meta.className = 'meta';
+  meta.textContent = state.model + ' · ' + state.strength;
+  body.appendChild(meta);
+
+  const t = document.createElement('div');
+  t.className = 'typing';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  body.appendChild(t);
+
+  wrap.appendChild(body);
+  chatInner.appendChild(wrap);
+  scrollDown();
+}
+
+function removeTyping(){
+  const t = document.getElementById('typingMsg');
+  if(t) t.remove();
+}
+
+function streamText(el, text, done){
+  let i = 0;
+  const step = Math.max(1, Math.round(text.length / 50));
+  const timer = setInterval(()=>{
+    i += step;
+    el.textContent = text.slice(0, i);
+    scrollDown();
+    if(i >= text.length){
+      clearInterval(timer);
+      el.textContent = text;
+      scrollDown();
+      done && done();
+    }
+  }, 18);
+}
+
+/* ============ 发送逻辑 ============ */
+function send(){
+  if(state.busy) return;
+  const text = input.value.trim();
+  if(!text) return;
+
+  input.value = '';
+  autoResize();
+  updateUI();
+  addMessage('user', text);
+
+  state.busy = true;
+  updateUI();
+  showTyping();
+
+  const delay = 380 + Math.random() * 620;
+
+  setTimeout(()=>{
+    removeTyping();
+    const reply = generateReply(text);
+    const bubble = addMessage('ai', '');
+    bubble.textContent = '';
+    streamText(bubble, reply, ()=>{
+      state.busy = false;
+      updateUI();
+      input.focus();
+    });
+  }, delay);
+}
+
+/* ============ 输入框事件 ============ */
+function autoResize(){
+  input.style.height = 'auto';
+  input.style.height = Math.min(input.scrollHeight, 150) + 'px';
+}
+
+input.addEventListener('input', () => {
+  autoResize();
+  updateUI();
+});
+
+input.addEventListener('keydown', e=>{
+  if(e.key === 'Enter' && !e.shiftKey && !e.isComposing){
+    e.preventDefault();
+    send();
+  }
+});
+sendBtn.addEventListener('click', send);
+
+/* ============ 初始化 ============ */
+updateUI();
+addMessage('ai', '大宝哥在线。问吧，反正我瞎答。');
+input.focus();
+</script>
+</body>
+</html>
