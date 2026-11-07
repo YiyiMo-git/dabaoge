@@ -735,6 +735,12 @@ const settingsBtn = document.getElementById('settingsBtn');
 const settingsModal = document.getElementById('settingsModal');
 const closeSettings = document.getElementById('closeSettings');
 
+/* ---------- UI 状态 ---------- */
+function updateUI() {
+  const hasText = input.value.trim().length > 0;
+  sendBtn.classList.toggle('ready', hasText && !state.busy);
+}
+
 /* ---------- 设置弹窗 ---------- */
 function openSettings(){ settingsModal.classList.add('show'); syncSettingsUI(); }
 function closeSettingsFn(){ settingsModal.classList.remove('show'); }
