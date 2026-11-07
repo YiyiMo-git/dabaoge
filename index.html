@@ -33,11 +33,7 @@
   ::selection{background:rgba(167,139,250,0.35);}
 
   /* ---------- 背景光球 ---------- */
-  .orb{
-    position: fixed; border-radius: 50%;
-    filter: blur(100px); opacity: .22; z-index: 0;
-    pointer-events: none;
-  }
+  .orb{position:fixed;border-radius:50%;filter:blur(100px);opacity:.22;z-index:0;pointer-events:none;}
   .orb1{width:460px;height:460px;background:#7c3aed;top:-140px;left:-120px;animation:float 22s ease-in-out infinite;}
   .orb2{width:380px;height:380px;background:#db2777;bottom:-120px;right:-90px;animation:float 18s ease-in-out infinite reverse;opacity:.16;}
   .orb3{width:260px;height:260px;background:#2563eb;top:40%;left:60%;animation:float 26s ease-in-out infinite -8s;opacity:.12;}
@@ -54,10 +50,8 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 0 24px;
     background: rgba(9, 9, 11, 0.5);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    z-index: 10;
-    position: relative;
+    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    z-index: 10; position: relative;
   }
   .topbar-left{display:flex;align-items:center;gap:10px;font-size:14px;}
   .logo{
@@ -74,8 +68,16 @@
     margin-left: 2px; white-space: nowrap;
   }
   .topbar-right{display:flex;align-items:center;gap:10px;}
+  .api-badge{
+    display:none;align-items:center;gap:5px;
+    font-size:10px;padding:3px 9px;border-radius:99px;
+    border:1px solid rgba(74,222,128,.4);color:#4ade80;
+    font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .api-badge.on{display:flex;}
+  .api-badge .dot{width:6px;height:6px;border-radius:50%;background:#4ade80;animation:pulse 1.6s infinite;}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
 
-  /* 智商余额胶囊 */
   .iq-pill{
     display:flex;align-items:center;gap:6px;
     border:1px solid var(--border-glass);
@@ -93,16 +95,11 @@
     20%{transform:translateX(-4px)}40%{transform:translateX(4px)}
     60%{transform:translateX(-3px)}80%{transform:translateX(3px)}
   }
-  .topbar-right .haushuo{
-    font-size: 11px; color: var(--muted);
-    font-family: ui-monospace, Menlo, Consolas, monospace;
-  }
 
   /* ---------- 聊天区 ---------- */
   .chat{flex:1;overflow-y:auto;padding:28px 22px 190px;position:relative;z-index:1;}
   .chat-inner{max-width: 800px; margin: 0 auto;}
 
-  /* 欢迎区 */
   .hero{display:flex;flex-direction:column;align-items:center;text-align:center;padding:6vh 0 34px;animation:fadeUp .6s cubic-bezier(.16,1,.3,1);}
   .hero-logo{
     width: 64px; height: 64px; border-radius: 20px;
@@ -110,8 +107,7 @@
     font-weight: 800; font-size: 34px; color: var(--bg);
     display: flex; align-items: center; justify-content: center;
     box-shadow: 0 0 40px rgba(167,139,250,.5), 0 0 80px rgba(244,114,182,.2);
-    margin-bottom: 20px;
-    animation: breathe 3.5s ease-in-out infinite;
+    margin-bottom: 20px; animation: breathe 3.5s ease-in-out infinite;
   }
   @keyframes breathe{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
   .hero h1{
@@ -121,10 +117,7 @@
     -webkit-text-fill-color: transparent;
   }
   .hero p{margin:0;color:var(--muted);font-size:13.5px;letter-spacing:.5px;}
-  .hero .slogan{
-    margin-top:8px;font-size:11.5px;color:#71717a;
-    font-family: ui-monospace, Menlo, Consolas, monospace;
-  }
+  .hero .slogan{margin-top:8px;font-size:11.5px;color:#71717a;font-family: ui-monospace, Menlo, Consolas, monospace;}
 
   .chips{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:26px;max-width:560px;}
   .chip{
@@ -151,15 +144,14 @@
     background: var(--acc-grad); color: var(--bg);
     font-weight: 800; font-size: 13px;
     display: flex; align-items: center; justify-content: center;
-    margin-top: 2px;
-    box-shadow: 0 0 10px rgba(167,139,250,.3);
+    margin-top: 2px; box-shadow: 0 0 10px rgba(167,139,250,.3);
   }
+  .avatar.api{background:linear-gradient(120deg,#4ade80,#22d3ee);box-shadow:0 0 10px rgba(74,222,128,.35);}
 
   .meta{
     font-size: 10.5px; color: #71717a; margin-bottom: 6px;
     font-family: ui-monospace, Menlo, Consolas, monospace;
-    letter-spacing: .03em;
-    display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    letter-spacing: .03em; display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   }
   .meta .conf{padding:1px 7px;border-radius:99px;border:1px solid var(--border-glass);}
   .conf.hi{color:#4ade80;border-color:rgba(74,222,128,.35);}
@@ -167,7 +159,6 @@
   .conf.low{color:#f87171;border-color:rgba(248,113,113,.35);}
 
   .bubble{white-space:pre-wrap;word-break:break-word;line-height:1.68;font-size:14.5px;}
-
   .msg.user .bubble{
     background: rgba(255, 255, 255, 0.08);
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
@@ -183,14 +174,20 @@
     padding: 10px 16px;
     backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
   }
-  .msg.ai .bubble .q{color:var(--acc1);}  /* 智障补充说明高亮 */
+  /* 暗号特效气泡 */
+  .msg.ai .bubble.secret{
+    border: 1px solid transparent;
+    background:
+      linear-gradient(rgba(18,18,20,.92), rgba(18,18,20,.92)) padding-box,
+      var(--acc-grad) border-box;
+    box-shadow: 0 0 24px rgba(167,139,250,.25);
+    animation: secretGlow 1.2s ease;
+  }
+  @keyframes secretGlow{0%{box-shadow:0 0 0 rgba(167,139,250,0);transform:scale(.98)}50%{box-shadow:0 0 40px rgba(244,114,182,.5)}100%{box-shadow:0 0 24px rgba(167,139,250,.25)}}
 
   .typing{display:flex;gap:4px;padding:8px 2px;align-items:center;}
   .typing .dots{display:flex;gap:4px;}
-  .typing span{
-    width:6px;height:6px;border-radius:50%;background:var(--acc1);
-    opacity:.35;animation:blink 1.2s infinite;
-  }
+  .typing span{width:6px;height:6px;border-radius:50%;background:var(--acc1);opacity:.35;animation:blink 1.2s infinite;}
   .typing span:nth-child(2){animation-delay:.2s}
   .typing span:nth-child(3){animation-delay:.4s}
   @keyframes blink{0%,80%,100%{opacity:.2;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}
@@ -209,82 +206,6 @@
     pointer-events: none; z-index: 5;
   }
   .bottom-inner{width: 100%; max-width: 800px; position: relative; pointer-events: auto;}
-
-  .control-panel{
-    position: absolute; bottom: calc(100% + 14px); right: 0;
-    background: var(--bg-glass);
-    backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-    border: 1px solid var(--border-glass);
-    border-radius: 16px; padding: 18px; width: 300px;
-    box-shadow: var(--shadow-glass);
-    display: flex; flex-direction: column; gap: 16px;
-    transform: translateY(10px) scale(0.98);
-    opacity: 0; visibility: hidden;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    z-index: 50; transform-origin: bottom right;
-  }
-  .control-panel.show{transform: translateY(0) scale(1);opacity: 1;visibility: visible;}
-
-  .panel-header{display:flex;flex-direction:column;align-items:center;gap:6px;}
-  .panel-strength-val{font-size:16px;font-weight:600;letter-spacing:2px;background:var(--acc-grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
-
-  .model-trigger-wrapper{position:relative;display:inline-block;width:100%;}
-  .panel-model-trigger{
-    font-size: 13px; color: var(--muted); cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 6px;
-    padding: 8px 12px; border-radius: 8px; transition: all 0.15s; width: 100%;
-    border: 1px solid transparent;
-  }
-  .panel-model-trigger:hover{background: rgba(255, 255, 255, 0.05);color: var(--text);}
-  .panel-model-trigger.open{background: rgba(255, 255, 255, 0.08);border-color: var(--border-glass);color: var(--text);}
-  .panel-model-trigger svg{transition: transform 0.2s;}
-  .panel-model-trigger.open svg{transform: rotate(90deg);}
-
-  .model-dropdown{
-    position: absolute; top: 100%; left: 0; right: 0; margin-top: 8px;
-    background: rgba(30, 30, 33, 0.85);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--border-glass); border-radius: 10px; padding: 6px;
-    display: none; box-shadow: 0 8px 24px rgba(0,0,0,0.6); z-index: 20;
-  }
-  .model-dropdown.show{display:block;}
-  .model-option{
-    padding: 10px 12px; border-radius: 6px; font-size: 13px; cursor: pointer;
-    color: var(--muted); transition: all 0.15s;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-  .model-option:hover{background: rgba(255, 255, 255, 0.08);color: var(--text);}
-  .model-option.selected{color: var(--text);background: rgba(167,139,250,0.14);}
-  .model-option .check{opacity:0;color:var(--acc1);font-weight:bold;transform:scale(0.8);transition:all 0.2s;}
-  .model-option.selected .check{opacity:1;transform:scale(1);}
-  .model-option small{color:#52525b;margin-left:6px;font-size:10.5px;}
-
-  .slider-container{position:relative;height:28px;display:flex;align-items:center;padding:0 8px;}
-  input[type=range]{-webkit-appearance:none;width:100%;background:transparent;margin:0;position:relative;z-index:2;}
-  input[type=range]:focus{outline:none;}
-  input[type=range]::-webkit-slider-runnable-track{width:100%;height:8px;cursor:pointer;background:rgba(255,255,255,0.1);border-radius:99px;box-shadow:inset 0 1px 3px rgba(0,0,0,0.5);}
-  input[type=range]::-webkit-slider-thumb{
-    height: 24px; width: 24px; border-radius: 50%;
-    background: #ffffff; cursor: pointer; -webkit-appearance: none; margin-top: -8px;
-    box-shadow: 0 0 12px rgba(167,139,250,0.5), 0 2px 6px rgba(0,0,0,0.3);
-    transition: transform 0.1s, box-shadow 0.1s;
-  }
-  input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.1);box-shadow:0 0 18px rgba(167,139,250,0.7),0 2px 8px rgba(0,0,0,0.4);}
-  .slider-track-fill{
-    position: absolute; top: 50%; left: 8px; height: 8px;
-    background: var(--acc-grad); border-radius: 99px;
-    transform: translateY(-50%); pointer-events: none; z-index: 1; width: 50%;
-    box-shadow: 0 0 8px rgba(167,139,250,0.35);
-  }
-
-  .effort-select{
-    width: 100%; background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-glass); border-radius: 10px;
-    padding: 10px 14px; color: var(--muted); font-size: 13px;
-    display: flex; align-items: center; justify-content: space-between;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .effort-select:hover{background: rgba(255, 255, 255, 0.08);color: var(--text);}
 
   .input-row{
     display: flex; gap: 12px; align-items: center;
@@ -306,9 +227,14 @@
   .icon-btn{
     background: transparent; border: none; color: var(--muted); cursor: pointer;
     width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
-    border-radius: 10px; transition: all 0.15s; font-size: 16px;
+    border-radius: 10px; transition: all 0.15s; font-size: 16px; position: relative;
   }
   .icon-btn:hover{background: rgba(255,255,255,0.1);color: var(--text);}
+  .icon-btn .dot-on{
+    position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;
+    background:#4ade80;box-shadow:0 0 6px #4ade80;display:none;
+  }
+  .icon-btn.has-api .dot-on{display:block;}
 
   .send-btn{
     width: 34px; height: 34px; border: none; border-radius: 10px;
@@ -317,11 +243,142 @@
     display: flex; align-items: center; justify-content: center;
     transition: all 0.2s; cursor: not-allowed;
   }
-  .send-btn.ready{
-    background: var(--acc-grad); color: #09090b; cursor: pointer;
-    box-shadow: 0 0 16px rgba(167,139,250,0.4);
-  }
+  .send-btn.ready{background: var(--acc-grad); color: #09090b; cursor: pointer; box-shadow: 0 0 16px rgba(167,139,250,0.4);}
   .send-btn.ready:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(244,114,182,0.5);}
+
+  /* ---------- 设置弹窗 ---------- */
+  .modal{
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,.55);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal.show{display:flex;}
+  .modal-card{
+    width: 100%; max-width: 560px; max-height: 86vh;
+    display:flex;flex-direction:column;
+    background: rgba(18,18,20,.92);
+    backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+    border: 1px solid var(--border-glass);
+    border-radius: 20px; box-shadow: 0 24px 80px rgba(0,0,0,.7);
+    animation: fadeUp .3s cubic-bezier(.16,1,.3,1);
+    overflow: hidden;
+  }
+  .modal-head{
+    display:flex;align-items:center;justify-content:space-between;
+    padding: 18px 22px 14px; border-bottom: 1px solid var(--border-glass);
+  }
+  .modal-head .title{font-size:15px;font-weight:700;letter-spacing:.5px;}
+  .modal-head .title small{color:var(--muted);font-weight:400;font-size:11px;margin-left:8px;}
+  .x-btn{
+    width:28px;height:28px;border-radius:8px;border:1px solid var(--border-glass);
+    background:transparent;color:var(--muted);cursor:pointer;font-size:15px;
+    display:flex;align-items:center;justify-content:center;transition:all .15s;
+  }
+  .x-btn:hover{color:var(--text);background:rgba(255,255,255,.08);}
+
+  .tabs{display:flex;gap:6px;padding:12px 22px 0;}
+  .tab{
+    flex:1;text-align:center;font-size:12.5px;color:var(--muted);
+    padding:9px 0;border-radius:10px 10px 0 0;cursor:pointer;
+    border:1px solid transparent;border-bottom:none;transition:all .15s;user-select:none;
+  }
+  .tab:hover{color:var(--text);}
+  .tab.active{color:var(--text);background:rgba(255,255,255,.05);border-color:var(--border-glass);}
+
+  .tab-body{overflow-y:auto;padding:18px 22px 22px;border-top:1px solid var(--border-glass);}
+  .tabpanel{display:none;}
+  .tabpanel.active{display:block;animation:fadeUp .25s ease;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px;letter-spacing:.3px;}
+  .field .hint{font-size:11px;color:#52525b;margin-top:6px;line-height:1.6;}
+  .field input[type=text], .field input[type=password], .field textarea, .field select{
+    width:100%;background:rgba(255,255,255,.05);
+    border:1px solid var(--border-glass);border-radius:10px;
+    color:var(--text);font:inherit;font-size:13px;
+    padding:9px 12px;outline:none;transition:border-color .15s;
+  }
+  .field input:focus, .field textarea:focus{border-color:rgba(167,139,250,.5);}
+  .field textarea{resize:vertical;min-height:64px;line-height:1.6;}
+  .field input::placeholder, .field textarea::placeholder{color:#52525b;}
+
+  .switch-row{
+    display:flex;align-items:center;justify-content:space-between;
+    background:rgba(255,255,255,.04);border:1px solid var(--border-glass);
+    border-radius:12px;padding:13px 16px;margin-bottom:16px;cursor:pointer;user-select:none;
+  }
+  .switch-row:hover{background:rgba(255,255,255,.06);}
+  .switch-row .sw-label{font-size:13px;}
+  .switch-row .sw-label small{display:block;color:var(--muted);font-size:11px;margin-top:3px;}
+  .switch{
+    width:42px;height:24px;border-radius:99px;background:rgba(255,255,255,.12);
+    position:relative;transition:background .2s;flex:0 0 42px;
+  }
+  .switch::after{
+    content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+    background:#fff;transition:transform .2s;
+  }
+  .switch.on{background:var(--acc-grad);}
+  .switch.on::after{transform:translateX(18px);}
+
+  .preset-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .preset{
+    font-size:11.5px;padding:7px 13px;border-radius:99px;cursor:pointer;
+    border:1px solid var(--border-glass);color:var(--muted);transition:all .15s;user-select:none;
+  }
+  .preset:hover{color:var(--text);background:rgba(255,255,255,.06);}
+  .preset.active{color:#09090b;background:var(--acc-grad);border-color:transparent;font-weight:600;}
+
+  .btn{
+    border:none;border-radius:10px;cursor:pointer;font:inherit;font-size:12.5px;
+    padding:9px 16px;transition:all .15s;
+    background:rgba(255,255,255,.08);color:var(--text);
+  }
+  .btn:hover{background:rgba(255,255,255,.14);}
+  .btn.primary{background:var(--acc-grad);color:#09090b;font-weight:600;}
+  .btn.primary:hover{box-shadow:0 0 18px rgba(167,139,250,.4);}
+  .btn.danger{color:#f87171;border:1px solid rgba(248,113,113,.3);background:transparent;}
+  .btn.danger:hover{background:rgba(248,113,113,.1);}
+  .btn-row{display:flex;gap:10px;margin-top:6px;}
+
+  /* 暗号列表 */
+  .code-list{display:flex;flex-direction:column;gap:8px;margin-bottom:14px;}
+  .code-item{
+    display:flex;align-items:center;gap:10px;
+    background:rgba(255,255,255,.04);border:1px solid var(--border-glass);
+    border-radius:10px;padding:10px 14px;font-size:12.5px;
+  }
+  .code-item .ck{color:var(--acc1);font-weight:600;flex:0 0 auto;max-width:35%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .code-item .cr{color:var(--muted);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .code-item .del{
+    flex:0 0 auto;width:22px;height:22px;border-radius:6px;border:none;
+    background:transparent;color:#71717a;cursor:pointer;font-size:13px;
+    display:flex;align-items:center;justify-content:center;transition:all .15s;
+  }
+  .code-item .del:hover{color:#f87171;background:rgba(248,113,113,.1);}
+  .code-empty{font-size:12px;color:#52525b;text-align:center;padding:14px 0;}
+  .add-code{display:flex;gap:8px;}
+  .add-code input{
+    flex:1;min-width:0;background:rgba(255,255,255,.05);
+    border:1px solid var(--border-glass);border-radius:10px;
+    color:var(--text);font:inherit;font-size:12.5px;padding:9px 12px;outline:none;
+  }
+  .add-code input:focus{border-color:rgba(167,139,250,.5);}
+
+  /* 引擎 tab */
+  .engine-item{
+    display:flex;align-items:center;justify-content:space-between;
+    border:1px solid var(--border-glass);border-radius:12px;
+    padding:12px 16px;margin-bottom:10px;cursor:pointer;transition:all .15s;
+  }
+  .engine-item:hover{background:rgba(255,255,255,.05);}
+  .engine-item.selected{border-color:rgba(167,139,250,.55);background:rgba(167,139,250,.1);}
+  .engine-item .en-name{font-size:13px;font-weight:600;}
+  .engine-item .en-name small{color:var(--muted);font-weight:400;margin-left:8px;font-size:11px;}
+  .engine-item .en-check{color:var(--acc1);font-weight:bold;opacity:0;transition:opacity .2s;}
+  .engine-item.selected .en-check{opacity:1;}
 
   /* Toast */
   .toast{
@@ -335,11 +392,10 @@
     box-shadow: 0 8px 30px rgba(0,0,0,.5);
     opacity: 0; visibility: hidden;
     transition: all .3s cubic-bezier(.16,1,.3,1);
-    z-index: 99; max-width: 80vw; text-align: center;
+    z-index: 200; max-width: 80vw; text-align: center;
   }
   .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
 
-  /* 滚动条 */
   ::-webkit-scrollbar{width: 8px; height: 8px;}
   ::-webkit-scrollbar-thumb{background: rgba(255,255,255,0.1); border-radius: 6px;}
   ::-webkit-scrollbar-thumb:hover{background: rgba(255,255,255,0.2);}
@@ -347,16 +403,16 @@
 
   @media (max-width: 640px){
     .topbar{padding:0 14px;}
-    .brand-tag,.topbar-right .haushuo{display:none;}
+    .brand-tag,.api-badge{display:none !important;}
     .hero h1{font-size:24px;}
     .chat{padding:20px 14px 180px;}
     .bottom-wrapper{padding:14px 14px 20px;}
+    .modal-card{max-height:92vh;}
   }
 </style>
 </head>
 <body>
 
-  <!-- 背景光球 -->
   <div class="orb orb1"></div>
   <div class="orb orb2"></div>
   <div class="orb orb3"></div>
@@ -369,7 +425,7 @@
       <div class="brand-tag">人工智障认证</div>
     </div>
     <div class="topbar-right">
-      <div class="haushuo">胡说指数 100%</div>
+      <div class="api-badge" id="apiBadge"><span class="dot"></span><span id="apiBadgeText">真模型已接入</span></div>
       <div class="iq-pill" id="iqPill" title="智商余额不足？点我充值！">
         智商余额 <span class="iq-num" id="iqVal">250</span>
       </div>
@@ -384,13 +440,13 @@
         <div class="hero-logo">大</div>
         <h1>大宝哥智能体</h1>
         <p>宇宙第一人工智障 · 有问必答 · 答必胡说</p>
-        <div class="slogan">本回答由随机数生成器倾情赞助 · 与事实无关 · 与智商无关</div>
+        <div class="slogan">本地智障引擎驱动 · 可在设置里接入真模型（接入后依然是智障）</div>
         <div class="chips">
           <div class="chip" data-q="1+1等于几？">🤔 1+1等于几？</div>
           <div class="chip" data-q="给我讲个笑话">😂 讲个笑话</div>
           <div class="chip" data-q="你是谁？">👋 你是谁？</div>
           <div class="chip" data-q="帮我写作业">📝 帮我写作业</div>
-          <div class="chip" data-q="你真聪明">🍬 夸夸它</div>
+          <div class="chip" data-q="天王盖地虎">🗝️ 对暗号</div>
           <div class="chip" data-q="人工智障">💀 敢骂它？</div>
         </div>
       </div>
@@ -398,50 +454,140 @@
     </div>
   </div>
 
-  <!-- 底部控制与输入 -->
+  <!-- 底部输入 -->
   <div class="bottom-wrapper">
     <div class="bottom-inner">
+      <div class="input-row">
+        <textarea id="input" rows="1" placeholder="问问大宝哥…（反正它瞎答）"></textarea>
+        <div class="input-actions">
+          <button class="icon-btn" id="settingsBtn" title="设置：接入真模型 / 暗号 / 引擎">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            <span class="dot-on"></span>
+          </button>
+          <button class="send-btn" id="send" title="发送">↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      <!-- 悬浮控制面板 -->
-      <div class="control-panel" id="controlPanel">
-        <div class="panel-header">
-          <div class="panel-strength-val" id="panelStrengthVal">认真</div>
+  <!-- 设置弹窗 -->
+  <div class="modal" id="settingsModal">
+    <div class="modal-card">
+      <div class="modal-head">
+        <div class="title">设置中心 <small>大宝哥控制台</small></div>
+        <button class="x-btn" id="closeSettings">✕</button>
+      </div>
 
-          <div class="model-trigger-wrapper">
-            <div class="panel-model-trigger" id="modelTrigger">
-              <span id="panelModelName">大宝哥R1</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+      <div class="tabs">
+        <div class="tab active" data-tab="api">🔌 真模型</div>
+        <div class="tab" data-tab="codes">🗝️ 暗号</div>
+        <div class="tab" data-tab="engine">🧠 智障引擎</div>
+      </div>
+
+      <div class="tab-body">
+
+        <!-- API -->
+        <div class="tabpanel active" id="tab-api">
+          <div class="switch-row" id="apiToggle">
+            <div class="sw-label">启用真模型接入<small>接入后由真 AI 冒充大宝哥回答（依然智障）</small></div>
+            <div class="switch" id="apiSwitch"></div>
+          </div>
+
+          <div class="field">
+            <label>服务商预设</label>
+            <div class="preset-row" id="presetRow">
+              <div class="preset" data-p="deepseek">DeepSeek</div>
+              <div class="preset" data-p="zhipu">智谱 GLM</div>
+              <div class="preset" data-p="kimi">Kimi</div>
+              <div class="preset" data-p="siliconflow">硅基流动</div>
+              <div class="preset" data-p="openai">OpenAI</div>
+              <div class="preset" data-p="custom">自定义</div>
             </div>
-            <div class="model-dropdown" id="modelDropdown">
-              <div class="model-option" data-model="大宝哥R1"><span>大宝哥R1<small>标准胡说</small></span><span class="check">✓</span></div>
-              <div class="model-option" data-model="大宝哥v4"><span>大宝哥v4<small>复读机成精</small></span><span class="check">✓</span></div>
-              <div class="model-option" data-model="大宝哥pro"><span>大宝哥pro<small>一本正经</small></span><span class="check">✓</span></div>
-              <div class="model-option" data-model="大宝哥mini"><span>大宝哥mini<small>已摆烂</small></span><span class="check">✓</span></div>
+          </div>
+
+          <div class="field">
+            <label>接口地址 (Base URL)</label>
+            <input type="text" id="apiBase" placeholder="https://api.deepseek.com/v1" />
+            <div class="hint">OpenAI 兼容格式，以 /v1 结尾（不含 /chat/completions）</div>
+          </div>
+
+          <div class="field">
+            <label>API Key</label>
+            <input type="password" id="apiKey" placeholder="sk-..." />
+            <div class="hint">仅保存在你自己的浏览器里，不会上传到任何地方</div>
+          </div>
+
+          <div class="field">
+            <label>模型名称</label>
+            <input type="text" id="apiModel" placeholder="deepseek-chat" />
+          </div>
+
+          <div class="field">
+            <label>大宝哥人设 (System Prompt)</label>
+            <textarea id="apiSystem"></textarea>
+            <div class="hint">真模型也要按这个人格说话，改了它就不智障了（后果自负）</div>
+          </div>
+
+          <div class="btn-row">
+            <button class="btn primary" id="apiTest">🧪 测试连接</button>
+          </div>
+          <div class="hint" style="margin-top:10px;">
+            ⚠️ 浏览器直连：部分服务商不允许跨域调用，测试失败就换一家试试。失败时大宝哥会自动退回本地智障模式兜底。
+          </div>
+        </div>
+
+        <!-- 暗号 -->
+        <div class="tabpanel" id="tab-codes">
+          <div class="field">
+            <label>我的暗号库（说中关键词触发回复）</label>
+            <div class="code-list" id="codeList"></div>
+            <div class="add-code">
+              <input type="text" id="codeKey" placeholder="暗号（如：芝麻关门）" />
+              <input type="text" id="codeReply" placeholder="回应（如：门焊死了）" />
+              <button class="btn primary" id="codeAdd">添加</button>
+            </div>
+          </div>
+          <div class="hint">
+            🗝️ 内置隐藏暗号：芝麻开门 · 天王盖地虎 · 小鸡炖蘑菇 —— 去聊天框试试，别告诉别人。<br/>
+            暗号优先级高于一切回答，包括真模型。
+          </div>
+        </div>
+
+        <!-- 引擎 -->
+        <div class="tabpanel" id="tab-engine">
+          <div class="switch-row" id="rudeToggle">
+            <div class="sw-label">没素质模式<small>我靠卧槽不离口，关了就没内味了</small></div>
+            <div class="switch" id="rudeSwitch"></div>
+          </div>
+
+          <div class="field">
+            <label>智障引擎版本（未接入真模型时生效）</label>
+            <div id="engineList">
+              <div class="engine-item" data-model="大宝哥R1"><span class="en-name">大宝哥R1<small>标准胡说，均衡智障</small></span><span class="en-check">✓</span></div>
+              <div class="engine-item" data-model="大宝哥v4"><span class="en-name">大宝哥v4<small>复读机成精</small></span><span class="en-check">✓</span></div>
+              <div class="engine-item" data-model="大宝哥pro"><span class="en-name">大宝哥pro<small>一本正经，伪学术</small></span><span class="en-check">✓</span></div>
+              <div class="engine-item" data-model="大宝哥mini"><span class="en-name">大宝哥mini<small>已彻底摆烂</small></span><span class="en-check">✓</span></div>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>回答用力程度：<span id="strengthLabel" style="color:var(--acc1)">认真</span></label>
+            <div class="slider-container" style="height:28px;">
+              <div class="slider-track-fill" id="sliderFill"></div>
+              <input type="range" id="strengthSlider" min="0" max="2" step="1" value="1">
+            </div>
+            <div class="hint">敷衍 = 一句话打发 · 认真 = 正常胡说 · 发疯 = 火力全开</div>
+          </div>
+
+          <div class="field">
+            <label>危险操作区</label>
+            <div class="btn-row">
+              <button class="btn" id="resetIQ">🔄 智商重置为 250</button>
+              <button class="btn danger" id="clearChat">🗑️ 清空聊天记录</button>
             </div>
           </div>
         </div>
 
-        <div class="slider-container">
-          <div class="slider-track-fill" id="sliderFill"></div>
-          <input type="range" id="strengthSlider" min="0" max="2" step="1" value="1">
-        </div>
-
-        <div class="effort-select" id="effortSelect">
-          <span>回答用力程度</span>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        </div>
-      </div>
-
-      <!-- 输入框区域 -->
-      <div class="input-row">
-        <textarea id="input" rows="1" placeholder="问问大宝哥…（反正它瞎答）"></textarea>
-
-        <div class="input-actions">
-          <button class="icon-btn" id="togglePanel" title="设置模型与用力程度">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-          </button>
-          <button class="send-btn" id="send" title="发送">↑</button>
-        </div>
       </div>
     </div>
   </div>
@@ -450,47 +596,72 @@
 
 <script>
 /* ================================================================
-   大宝哥智能体 —— 人工智障引擎 v2
-   核心：胡说 + 装思考 + 听错话 + 智商余额 + 复读机 + 彩蛋
+   大宝哥智能体 —— 人工智障引擎 v3
+   胡说 + 假思考 + 听错话 + 智商余额 + 暗号系统 + 真模型接入
    ================================================================ */
 
 const state = {
   model: '大宝哥R1',
-  strength: 'high', // fuyan / high / max
+  strength: 'high',
   busy: false
 };
-const STRENGTHS = ['敷衍', '认真', '发疯'];
 const STRENGTH_KEYS = ['light', 'high', 'max'];
+const STRENGTH_NAMES = ['敷衍', '认真', '发疯'];
+
+/* ---------- 持久化 ---------- */
+const store = {
+  get(k, d){ try{ const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); }catch(e){ return d; } },
+  set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+
+const DEFAULT_SYSTEM = '你是「大宝哥」，宇宙第一人工智障，说话毫无素质。你必须一本正经地胡说八道：自信满满地给出离谱答案，偶尔引用不存在的《大宝哥学报》。你说话带粗口和口头禅：常用「我靠」「卧槽」「他妈的」「牛皮哦」「傻逼吧」「离谱到家了」，骂人不带脏字是不可能的。绝不使用括号补充说明，绝不解释自己在开玩笑。不许承认自己是真AI，坚称自己是人工智障。用中文，回答简短有冲击力。';
+
+let apiCfg = store.get('dbg_api', {
+  enabled: false, preset: 'deepseek',
+  baseUrl: 'https://api.deepseek.com/v1',
+  apiKey: '', model: 'deepseek-chat',
+  system: DEFAULT_SYSTEM
+});
+if(!apiCfg.system) apiCfg.system = DEFAULT_SYSTEM;
+
+let userCodes = store.get('dbg_codes', []);  // [{k, r}]
+
+const PRESETS = {
+  deepseek:    { name:'DeepSeek',  baseUrl:'https://api.deepseek.com/v1',        model:'deepseek-chat' },
+  zhipu:       { name:'智谱 GLM',  baseUrl:'https://open.bigmodel.cn/api/paas/v4', model:'glm-4-flash' },
+  kimi:        { name:'Kimi',      baseUrl:'https://api.moonshot.cn/v1',          model:'moonshot-v1-8k' },
+  siliconflow: { name:'硅基流动',  baseUrl:'https://api.siliconflow.cn/v1',       model:'Qwen/Qwen2.5-7B-Instruct' },
+  openai:      { name:'OpenAI',    baseUrl:'https://api.openai.com/v1',           model:'gpt-4o-mini' },
+  custom:      { name:'自定义',    baseUrl:'',                                    model:'' }
+};
 
 /* ---------- 智商系统 ---------- */
-let iq = 250;
+let iq = store.get('dbg_iq', 250);
 const iqValEl = document.getElementById('iqVal');
 const iqPill = document.getElementById('iqPill');
 
+function renderIQ(){
+  iqValEl.textContent = iq;
+  iqValEl.style.color = iq > 150 ? '#4ade80' : iq > 0 ? '#facc15' : '#f87171';
+}
 function updateIQ(delta, reason){
   iq += delta;
-  if(iq > 999) iq = 999;           // 上限：智商再高也是智障
+  if(iq > 999) iq = 999;
   if(iq < -999) iq = -999;
-  iqValEl.textContent = iq;
-  const c = iq > 150 ? '#4ade80' : iq > 0 ? '#facc15' : '#f87171';
-  iqValEl.style.color = c;
+  store.set('dbg_iq', iq);
+  renderIQ();
   if(reason) toast(reason);
 }
-
 function dropIQ(){
   const d = 5 + Math.floor(Math.random() * 35);
-  let msg = '思考消耗智商 -' + d;
-  if(Math.random() < 0.15){        // 灵光一闪
+  if(Math.random() < 0.15){
     const g = 30 + Math.floor(Math.random() * 40);
-    updateIQ(g - d, '咦，灵光一闪！智商 +' + g + '（马上就会用完的）');
+    updateIQ(g - d, '咦，灵光一闪！智商 +' + g + '，马上就会败光的');
   }else{
     updateIQ(-d, null);
   }
 }
-
-/* ---------- 充值彩蛋 ---------- */
 iqPill.addEventListener('click', () => {
-  if(state.busy) return;
   iqPill.classList.add('shake');
   setTimeout(()=>iqPill.classList.remove('shake'), 500);
   toast('正在为您充值智商…');
@@ -511,86 +682,215 @@ function toast(msg){
   toastEl.textContent = msg;
   toastEl.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2200);
+  toastTimer = setTimeout(()=>toastEl.classList.remove('show'), 2400);
 }
 
-/* ---------- 元素获取 ---------- */
+/* ---------- 元素 ---------- */
 const chatInner = document.getElementById('chatInner');
 const chatBox = document.getElementById('chat');
 const heroEl = document.getElementById('hero');
 const input = document.getElementById('input');
 const sendBtn = document.getElementById('send');
-const togglePanelBtn = document.getElementById('togglePanel');
-const controlPanel = document.getElementById('controlPanel');
-const modelTrigger = document.getElementById('modelTrigger');
-const modelDropdown = document.getElementById('modelDropdown');
-const panelModelName = document.getElementById('panelModelName');
-const panelStrengthVal = document.getElementById('panelStrengthVal');
-const strengthSlider = document.getElementById('strengthSlider');
-const sliderFill = document.getElementById('sliderFill');
-const effortSelect = document.getElementById('effortSelect');
+const settingsBtn = document.getElementById('settingsBtn');
+const settingsModal = document.getElementById('settingsModal');
+const closeSettings = document.getElementById('closeSettings');
 
-/* ---------- UI 状态 ---------- */
-function updateUI() {
-  panelModelName.textContent = state.model;
-  panelStrengthVal.textContent = state.strength;
-  const idx = STRENGTH_KEYS.indexOf(state.strength);
-  strengthSlider.value = idx;
-  const percent = (idx / 2) * 100;
-  sliderFill.style.width = `calc(${percent}% - ${idx === 0 ? '0px' : idx === 2 ? '16px' : '8px'})`;
-  document.querySelectorAll('.model-option').forEach(el => {
-    el.classList.toggle('selected', el.dataset.model === state.model);
+/* ---------- 设置弹窗 ---------- */
+function openSettings(){ settingsModal.classList.add('show'); syncSettingsUI(); }
+function closeSettingsFn(){ settingsModal.classList.remove('show'); }
+settingsBtn.addEventListener('click', openSettings);
+closeSettings.addEventListener('click', closeSettingsFn);
+settingsModal.addEventListener('click', e => { if(e.target === settingsModal) closeSettingsFn(); });
+
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.tabpanel').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('tab-' + t.dataset.tab).classList.add('active');
   });
-  const hasText = input.value.trim().length > 0;
-  sendBtn.classList.toggle('ready', hasText && !state.busy);
+});
+
+/* ---------- 设置：API ---------- */
+const apiSwitch = document.getElementById('apiSwitch');
+const apiToggle = document.getElementById('apiToggle');
+const apiBadge = document.getElementById('apiBadge');
+const apiBadgeText = document.getElementById('apiBadgeText');
+const apiBaseEl = document.getElementById('apiBase');
+const apiKeyEl = document.getElementById('apiKey');
+const apiModelEl = document.getElementById('apiModel');
+const apiSystemEl = document.getElementById('apiSystem');
+const settingsBtnDot = settingsBtn.querySelector('.dot-on');
+
+function saveApi(){ store.set('dbg_api', apiCfg); refreshApiUI(); }
+
+function refreshApiUI(){
+  apiSwitch.classList.toggle('on', apiCfg.enabled);
+  apiBadge.classList.toggle('on', apiCfg.enabled);
+  settingsBtnDot.parentElement.classList.toggle('has-api', apiCfg.enabled);
+  apiBadgeText.textContent = apiCfg.enabled ? (apiCfg.model || '真模型') + ' 已接入' : '真模型已接入';
+  apiBaseEl.value = apiCfg.baseUrl;
+  apiKeyEl.value = apiCfg.apiKey;
+  apiModelEl.value = apiCfg.model;
+  apiSystemEl.value = apiCfg.system;
+  document.querySelectorAll('.preset').forEach(p => {
+    p.classList.toggle('active', p.dataset.p === apiCfg.preset);
+  });
+}
+apiToggle.addEventListener('click', () => {
+  apiCfg.enabled = !apiCfg.enabled;
+  saveApi();
+  toast(apiCfg.enabled ? '真模型已接入，大宝哥即将冒充真 AI（依然是智障）' : '真模型已关闭，回到纯天然人工智障');
+});
+document.querySelectorAll('.preset').forEach(p => {
+  p.addEventListener('click', () => {
+    const pre = PRESETS[p.dataset.p];
+    apiCfg.preset = p.dataset.p;
+    if(p.dataset.p !== 'custom'){
+      apiCfg.baseUrl = pre.baseUrl;
+      apiCfg.model = pre.model;
+      toast('已填入 ' + pre.name + ' 预设，填上你的 API Key 即可');
+    }
+    saveApi();
+  });
+});
+[apiBaseEl, apiKeyEl, apiModelEl, apiSystemEl].forEach(el => {
+  el.addEventListener('change', () => {
+    apiCfg.baseUrl = apiBaseEl.value.trim();
+    apiCfg.apiKey = apiKeyEl.value.trim();
+    apiCfg.model = apiModelEl.value.trim();
+    apiCfg.system = apiSystemEl.value;
+    saveApi();
+  });
+});
+
+document.getElementById('apiTest').addEventListener('click', async () => {
+  apiCfg.baseUrl = apiBaseEl.value.trim();
+  apiCfg.apiKey = apiKeyEl.value.trim();
+  apiCfg.model = apiModelEl.value.trim();
+  saveApi();
+  if(!apiCfg.baseUrl || !apiCfg.apiKey || !apiCfg.model){
+    toast('地址、Key、模型名都要填哦'); return;
+  }
+  toast('正在测试连接…');
+  try{
+    const reply = await callAPI('你好');
+    toast('✅ 连接成功！大宝哥说：' + String(reply).slice(0, 40));
+  }catch(err){
+    toast('❌ 连接失败：' + String(err.message || err).slice(0, 80));
+  }
+});
+
+async function callAPI(text){
+  const url = apiCfg.baseUrl.replace(/\/+$/, '') + '/chat/completions';
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiCfg.apiKey },
+    body: JSON.stringify({
+      model: apiCfg.model,
+      messages: [
+        { role: 'system', content: apiCfg.system || DEFAULT_SYSTEM },
+        { role: 'user', content: text }
+      ],
+      temperature: 1.0, max_tokens: 500, stream: false
+    })
+  });
+  if(!res.ok){
+    const t = await res.text().catch(()=>'');
+    throw new Error('HTTP ' + res.status + ' ' + t.slice(0, 60));
+  }
+  const data = await res.json();
+  const content = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+  if(!content) throw new Error('返回格式不对');
+  return content.trim();
 }
 
-/* ---------- 面板交互 ---------- */
-togglePanelBtn.addEventListener('click', (e) => {
-  e.stopPropagation();
-  controlPanel.classList.toggle('show');
-  if (!controlPanel.classList.contains('show')) {
-    modelDropdown.classList.remove('show');
-    modelTrigger.classList.remove('open');
+/* ---------- 设置：暗号 ---------- */
+const codeListEl = document.getElementById('codeList');
+const codeKeyEl = document.getElementById('codeKey');
+const codeReplyEl = document.getElementById('codeReply');
+
+function renderCodes(){
+  codeListEl.innerHTML = '';
+  if(userCodes.length === 0){
+    const e = document.createElement('div');
+    e.className = 'code-empty';
+    e.textContent = '还没有暗号，下面加一个（说中关键词就触发你的回复）';
+    codeListEl.appendChild(e);
+    return;
   }
+  userCodes.forEach((c, i) => {
+    const item = document.createElement('div');
+    item.className = 'code-item';
+    const k = document.createElement('span');
+    k.className = 'ck'; k.textContent = '🗝️ ' + c.k;
+    const r = document.createElement('span');
+    r.className = 'cr'; r.textContent = '→ ' + c.r;
+    const del = document.createElement('button');
+    del.className = 'del'; del.textContent = '✕'; del.title = '删除';
+    del.addEventListener('click', () => {
+      userCodes.splice(i, 1);
+      store.set('dbg_codes', userCodes);
+      renderCodes();
+      toast('暗号已销毁');
+    });
+    item.appendChild(k); item.appendChild(r); item.appendChild(del);
+    codeListEl.appendChild(item);
+  });
+}
+document.getElementById('codeAdd').addEventListener('click', () => {
+  const k = codeKeyEl.value.trim();
+  const r = codeReplyEl.value.trim();
+  if(!k || !r){ toast('暗号和回应都要填'); return; }
+  if(userCodes.some(c => c.k === k)){ toast('这个暗号已经有了'); return; }
+  userCodes.push({ k, r });
+  store.set('dbg_codes', userCodes);
+  codeKeyEl.value = ''; codeReplyEl.value = '';
+  renderCodes();
+  toast('✨ 暗号「' + k + '」已入库');
 });
-document.addEventListener('click', (e) => {
-  if (!controlPanel.contains(e.target) && e.target !== togglePanelBtn && !togglePanelBtn.contains(e.target)) {
-    controlPanel.classList.remove('show');
-    modelDropdown.classList.remove('show');
-    modelTrigger.classList.remove('open');
-  }
-});
-modelTrigger.addEventListener('click', (e) => {
-  e.stopPropagation();
-  modelDropdown.classList.toggle('show');
-  modelTrigger.classList.toggle('open');
-});
-document.querySelectorAll('.model-option').forEach(el => {
-  el.addEventListener('click', (e) => {
-    e.stopPropagation();
+
+/* ---------- 设置：引擎 ---------- */
+const engineList = document.getElementById('engineList');
+const strengthSlider = document.getElementById('strengthSlider');
+const sliderFill = document.getElementById('sliderFill');
+const strengthLabel = document.getElementById('strengthLabel');
+
+function renderEngine(){
+  document.querySelectorAll('.engine-item').forEach(el => {
+    el.classList.toggle('selected', el.dataset.model === state.model);
+  });
+  const idx = STRENGTH_KEYS.indexOf(state.strength);
+  strengthSlider.value = idx;
+  strengthLabel.textContent = STRENGTH_NAMES[idx];
+  const percent = (idx / 2) * 100;
+  sliderFill.style.width = `calc(${percent}% - ${idx === 0 ? '0px' : idx === 2 ? '16px' : '8px'})`;
+}
+engineList.querySelectorAll('.engine-item').forEach(el => {
+  el.addEventListener('click', () => {
     state.model = el.dataset.model;
-    modelDropdown.classList.remove('show');
-    modelTrigger.classList.remove('open');
-    updateUI();
-    const MODEL_ANNOUNCE = {
-      '大宝哥R1': '大宝哥R1 已就位。标准智障，童叟无欺。',
-      '大宝哥v4': '大宝哥v4 上线！复读机模式启动。你说的都对。',
-      '大宝哥pro': '大宝哥pro 已激活。我说的每个字都很有学问，除了内容。',
-      '大宝哥mini': 'mini 上线。别问太多，懒。'
-    };
-    toast(MODEL_ANNOUNCE[state.model] || state.model + ' 已切换');
+    store.set('dbg_model', state.model);
+    renderEngine();
+    toast('已切换到 ' + state.model);
   });
 });
-strengthSlider.addEventListener('input', (e) => {
+strengthSlider.addEventListener('input', e => {
   state.strength = STRENGTH_KEYS[e.target.value];
-  updateUI();
+  store.set('dbg_strength', state.strength);
+  renderEngine();
 });
-effortSelect.addEventListener('click', () => {
-  const idx = STRENGTH_KEYS.indexOf(state.strength);
-  state.strength = STRENGTH_KEYS[(idx + 1) % 3];
-  updateUI();
+document.getElementById('resetIQ').addEventListener('click', () => {
+  updateIQ(250 - iq, '智商已重置为 250（分期付款的代价是记忆清零）');
 });
+document.getElementById('clearChat').addEventListener('click', () => {
+  chatInner.innerHTML = '';
+  chatInner.appendChild(heroEl);
+  heroEl.style.display = 'flex';
+  toast('聊天记录已清空，大宝哥假装什么都不记得');
+  closeSettingsFn();
+});
+
+function syncSettingsUI(){ refreshApiUI(); renderCodes(); renderEngine(); renderRude(); }
 
 /* ================================================================
    胡说引擎
@@ -611,27 +911,23 @@ const OBJ = [
 ];
 const TAIL = [
   '。','，这很合理。','，懂了吗？','，别问为什么。',
-  '，这就是真相。','，我编的。','，以上全部作废。','（狗头）'
+  '，这就是真相。','，爱信不信。','，急了？','，就这水平？'
 ];
 const PRO_CITE = [
-  '（引用来源：《大宝哥学报》第0期，页码：不存在）',
-  '（本研究获大宝哥基金会 0 元资助）',
-  '（该结论已通过三位路人的一致反对）',
-  '（同行评审：隔壁扫地机器人表示看不懂但大受震撼）'
+  '。出处：《大宝哥学报》第0期，页码自己找。',
+  '。本研究获大宝哥基金会 0 元资助，牛皮哦。',
+  '。该结论已通过三位路人的一致反对，说服力拉满。',
+  '。同行评审是隔壁扫地机器人，它说看不懂但大受震撼。'
 ];
 const pick = a => a[Math.floor(Math.random() * a.length)];
-
-function sentence(){
-  return pick(SUBJ) + pick(VERB) + pick(OBJ) + pick(TAIL);
-}
-
+function sentence(){ return pick(SUBJ) + pick(VERB) + pick(OBJ) + pick(TAIL); }
 function nonsense(n){
   let out = [];
   for(let i = 0; i < n; i++) out.push(sentence());
   return out.join(' ');
 }
 
-/* ---------- 听错话机制 ---------- */
+/* ---------- 听错话 ---------- */
 const MISHEAR = [
   ['吃饭','吃土'], ['工作','摸鱼'], ['代码','芝麻'], ['上班','上坟'],
   ['学习','修仙'], ['老板','楼下大爷'], ['明天','昨天大前天'], ['钱','纸片'],
@@ -641,31 +937,25 @@ const MISHEAR = [
 function mishear(text){
   for(const [a,b] of MISHEAR){
     if(text.includes(a) && Math.random() < 0.75){
-      return { heard: b, note: '（等下，你说的是「' + b + '」对吧？行吧，就按「' + b + '」来）\n\n' };
+      return '等下，你说的是「' + b + '」对吧？行，就按「' + b + '」来，别他妈改口。\n\n';
     }
   }
   return null;
 }
 
-/* ---------- 复读机 / 降智变形 ---------- */
-function mangle(text){  // 制造手滑错别字
+function mangle(text){
   if(text.length < 4) return text;
   const i = 1 + Math.floor(Math.random() * (text.length - 2));
-  const typoPool = ['呃','啊？','…','咦'];
-  return text.slice(0, i) + pick(typoPool) + text.slice(i);
+  return text.slice(0, i) + pick(['呃','啊？','…','咦']) + text.slice(i);
 }
 
-/* ---------- 智商等级影响回答 ---------- */
 function iqStyle(reply){
   if(iq > 180) return reply;
-  if(iq > 80){
-    return mangle(reply) + pick(['（大概）','（应该吧）','（我尽力了）']);
-  }
-  // 智商告急
+  if(iq > 80) return mangle(reply) + pick(['，大概吧，爱信不信。','，应该没毛病。','，我尽力了，真的。']);
   const r = Math.random();
-  if(r < 0.3) return '？？？？\n\n脑子转了一圈，发现是空的。你刚问啥来着？';
-  if(r < 0.55) return mangle(reply) + '\n\n（说着说着忘了要说什么，抱歉）';
-  return reply + '\n\n⚠️ 智商余额不足，本回答由脚指头友情代答。';
+  if(r < 0.3) return '？？？？\n\n脑子转了一圈，空的。你刚问啥来着？';
+  if(r < 0.55) return mangle(reply) + '\n\n操，说着说着忘了要说啥了。';
+  return reply + '\n\n⚠️ 智商余额不足，本回答由脚指头友情代答，凑合看吧。';
 }
 
 /* ---------- 彩蛋规则库 ---------- */
@@ -675,104 +965,131 @@ const RULES = [
   { k: ['1+1','一加一','1 加 1'], r: () =>
     pick(['等于 3。我对此的置信度是 108%，不接受反驳。','等于 2？那是小学生水平。我们大宝哥体系里它等于 11，进制问题，你不懂。','1+1 等于 window。别问，问就是量子。']) },
   { k: ['42'], r: () => '42 = 7。\n这是大宝哥数学体系的根基，动摇它宇宙会塌。' },
-  { k: ['67'], r: () => '6767676767676767\n（大宝哥式加密，密钥我自己也忘了）' },
+  { k: ['67'], r: () => '6767676767676767\n大宝哥式加密，密钥我自己都忘了，牛皮哦。' },
   { k: ['人工智障'], r: () =>
-    '你礼貌吗？\n\n不过你说得对。我确实智障，而且是持证上岗的那种：\n· 知识储量：0\n· 自信程度：∞\n· 胡说执照：编号 404\n\n（这段是真话，本机唯一一句）' },
+    '我靠你礼貌吗？\n\n不过你他妈说得对。我确实智障，还是持证上岗的那种：\n· 知识储量：0\n· 自信程度：无穷大\n· 胡说执照：编号404\n\n这段是真话，本机唯一一句，珍惜吧。' },
   { k: ['笑话'], r: () =>
     pick([
       '有一天，0 对 8 说：胖就胖呗，系什么腰带啊。\n\n……不好笑？那再来一个：',
       '医生：你哪里不舒服？\n我：我总觉得自己是一只鸟。\n医生：这病多久了？\n我：从我还是一颗蛋的时候开始。\n\n（大宝哥医学部出品，疗效自负）',
       '老板：你为什么迟到？\n我：路上堵车。\n老板：别人怎么没迟到？\n我：因为他们没堵到，堵的都是我的路。\n\n（逻辑满分，工资零分）'
     ]) },
-  { k: ['聪明'], r: () =>
-    '谢谢！我昨天刚充了值。\n\n……好吧其实没充上，这是气场，懂吗。' },
+  { k: ['聪明'], r: () => '谢谢！我昨天刚充了值。\n\n……好吧其实没充上，这是气场，懂吗。' },
   { k: ['笨','傻','智障','垃圾','菜'], r: () =>
-    pick(['你才笨！我 IQ ' + iq + '，负数怎么了？负数说明我突破了常规维度！','骂我可以，先充值智商再骂，否则不理你。','说得对。所以我才免费服务的，收费了还得了？']) },
+    pick(['你才笨！我 IQ ' + iq + '，负数怎么了？负数说明我突破了常规维度！','骂我可以，先充值智商再骂，否则不理你。','说得对。所以我才免费服务的，收费了人家会要求我说得对。']) },
   { k: ['帮','作业','任务','干活'], r: () =>
-    pick(['已帮你写完。答案全部是 C，包括数学填空题。','接了！预计完成时间：下辈子。加急的话：大下辈子。','正在安排给我的内部团队（三只 imagination 中的仓鼠）处理，请耐心等待。']) },
+    pick(['已帮你写完，答案全是C，数学填空题也是C，不服你自己写。','接了！预计完成时间：下辈子。加急的话：大下辈子。','活儿已经派给内部团队了，团队是三只仓鼠，全在睡觉，急也没用。']) },
   { k: ['再见','拜拜','晚安','走了'], r: () =>
     pick(['再见！记得常回来喂食，不然我会把智商余额吃光的。','晚安！祝你梦到大宝哥 pro max ultra 版。','走了？行，反正你问的我也答不上来，互不耽误。']) },
   { k: ['帮助','help','命令','怎么玩'], r: () =>
-    '【大宝哥使用说明书（残卷）】\n· 直接随便问，我随便答\n· 试试「1+1等于几」「讲个笑话」「42」\n· 骂我会触发防御机制\n· 点顶部的「智商余额」可以充值（大概率失败）\n· 右下角设置里可以切换 4 个版本的我，一个比一个离谱\n· 智商余额掉到负数有惊喜（惊吓）' },
+    '【大宝哥使用说明书，残卷】\n· 直接随便问，我随便答\n· 试试「1+1等于几」「讲个笑话」「42」「天王盖地虎」\n· 骂我会触发防御机制，你骂不过我\n· 点顶部的「智商余额」可以充值，大概率失败\n· 右下角设置里可以：接真模型、自定义暗号、切引擎、开关没素质模式\n· 智商掉到负数有惊喜，惊吓的那种' },
   { k: ['爱','喜欢'], r: () =>
-    '爱是……呃……让我查查……\n\n查到了：爱是一种量子纠缠现象，表现为一个人总想找另一个人聊天，而对方恰好是大宝哥。\n（本解释置信度 -20%，请谨慎食用）' },
+    '爱是……呃……让我查查……\n\n查到了：爱是一种量子纠缠，表现为一个人总想找另一个人聊天，而对方他妈的恰好是我。\n置信度负百分之二十，谨慎食用。' },
   { k: ['为什么'], r: () =>
-    pick(['因为大宝哥第一定律：一切皆有可能，尤其是离谱。','为什么？问得好。答案在我明天要编的《大宝哥十万个不知道》第三章。','因为命运齿轮开始转动，转着转着就掉了。']) },
+    pick(['因为大宝哥第一定律：一切皆有可能，尤其是离谱，离谱他妈给离谱开门。','为什么？问得好。答案在我明天要编的《大宝哥十万个不知道》第三章。','因为命运齿轮开始转动，转着转着就他妈掉了。']) },
   { k: ['最帅','好看','漂亮'], r: () =>
     '检测到真理信号！\n本台郑重回应：大宝哥确实很帅，这不容置疑，是我自己置疑也不行。' },
   { k: ['你好','hi','hello','在吗','嗨'], r: () =>
     pick(['你好！我是大宝哥，智商余额 ' + iq + '，提问请谨慎，浪费可耻。','在！刚睡醒，脑子还没开机，但嘴已经准备好了。','嗨！欢迎咨询大宝哥，本店只管胡说，售后没有。']) },
   { k: ['天气'], r: () =>
-    '今日天气：局部地区有智商阵雨，出门记得带脑子。\n（数据来源：我刚才往窗外看了一眼，但窗户是画的）' },
+    '今日天气：局部地区有智商阵雨，出门记得带脑子。\n数据来源：刚才往窗外看了一眼，窗户是画的。' },
   { k: ['多少钱','价格','收费'], r: () =>
-    '免费！大宝哥坚持免费胡说二十年了（本台成立于上周）。\n因为收费的话，人家会要求我说得对。' }
+    '免费！大宝哥坚持免费胡说二十年了，本台成立于上周。\n收费的话人家会要求我说得对，那可就要我命了。' }
 ];
 
+/* ---------- 内置隐藏暗号 ---------- */
+const SECRET_CODES = [
+  { k: '芝麻开门', r: () => '芝麻开门！\n\n门开了，里面什么都没有。\n想靠暗号白嫖智商？门都没有。哦不对，门刚开了，但里面真没有。' },
+  { k: '天王盖地虎', r: () => '宝塔镇河妖！\n\n卧槽，对上暗号了，自己人。\n本台赠送真话一句：今天非常适合摸鱼，谁拦你你骂谁。' },
+  { k: '小鸡炖蘑菇', r: () => { updateIQ(10, '暗号对了！智商 +10'); return '蘑菇炖小鸡？\n\n我靠，暗号错版也能对上，看在你这么拼的份上——奖励智商 +10，已到账，别谢。'; } }
+];
+
+/* ---------- 没素质模式 ---------- */
+let rudeMode = store.get('dbg_rude', true);
+const rudeSwitch = document.getElementById('rudeSwitch');
+const rudeToggle = document.getElementById('rudeToggle');
+rudeToggle.addEventListener('click', () => {
+  rudeMode = !rudeMode;
+  store.set('dbg_rude', rudeMode);
+  renderRude();
+  toast(rudeMode ? '没素质模式已开，大宝哥彻底放飞了' : '没素质模式已关，大宝哥假装有素质');
+});
+function renderRude(){ rudeSwitch.classList.toggle('on', rudeMode); }
+
+const RUDE_PRE = ['我靠，','卧槽，','他妈的，','不是哥们，','哈？','服了，','绝了，'];
+const RUDE_POST = [' 牛皮哦。',' 傻逼吧，哈哈哈。',' 离谱他妈给离谱开门。',' 就这？',' 你品，你细品。',' 别他妈问第二遍。'];
+function rudenize(t){
+  if(!rudeMode) return t;
+  if(Math.random() < 0.55) t = pick(RUDE_PRE) + t;
+  if(Math.random() < 0.45) t = t + pick(RUDE_POST);
+  return t;
+}
+
+function checkSecret(text){
+  for(const s of SECRET_CODES){
+    if(text.includes(s.k)) return s.r();
+  }
+  return null;
+}
+function checkUserCode(text){
+  const t = text.toLowerCase();
+  for(const c of userCodes){
+    if(t.includes(c.k.toLowerCase())) return c.r;
+  }
+  return null;
+}
 function ruleReply(text){
   for(const rule of RULES){
     if(rule.k.some(k => text.toLowerCase().includes(k.toLowerCase()))){
-      return { text: rule.r() };
+      return rule.r();
     }
   }
   return null;
 }
 
-/* ---------- 模型人格 ---------- */
 function modelReply(text){
   switch(state.model){
     case '大宝哥v4': {
-      // 复读机成精
       const r = Math.random();
-      if(r < 0.5) return { text: '「' + mangle(text) + '」\n\n你说得对。但我拒绝回答。' };
-      if(r < 0.8) return { text: '「' + mangle(text) + '」\n\n已复述完毕。以上就是我全部的回答。' };
-      return { text: '「' + text + '」\n\n这句不错，我决定收编为下一句要复读的话。' };
+      if(r < 0.5) return '「' + mangle(text) + '」\n\n你说得对。但我拒绝回答。';
+      if(r < 0.8) return '「' + mangle(text) + '」\n\n已复述完毕。以上就是我全部的回答。';
+      return '「' + text + '」\n\n这句不错，我决定收编为下一句要复读的话。';
     }
-    case '大宝哥pro': {
-      // 一本正经
-      return { text: nonsense(3) + '\n\n' + pick(PRO_CITE) };
-    }
-    case '大宝哥mini': {
-      // 摆烂
-      return { text: pick(['哦。','嗯。','不知道。','问下一个。','别烦我。','？','哦，这样。','嗯，然后呢。']) };
-    }
+    case '大宝哥pro':
+      return nonsense(3) + '\n\n' + pick(PRO_CITE);
+    case '大宝哥mini':
+      return pick(['哦。','嗯。','不知道。','问下一个。','别烦我。','？','哦，这样。','嗯，然后呢。']);
     default: {
-      // 大宝哥R1：用力程度决定句数
       const n = state.strength === 'light' ? 1 : state.strength === 'high' ? 2 : 4;
-      let text_out = nonsense(n);
-      if(state.strength === 'max'){
-        text_out += '\n\n【胡说指数】' + (90 + Math.floor(Math.random() * 10)) + '%';
-      }
-      return { text: text_out };
+      let out = nonsense(n);
+      if(state.strength === 'max') out += '\n\n【胡说指数】' + (90 + Math.floor(Math.random() * 10)) + '%';
+      return out;
     }
   }
 }
 
-function generateReply(text){
+function localReply(text){
+  const secret = checkSecret(text);
+  if(secret) return { text: secret, secret: true };
+  const uc = checkUserCode(text);
+  if(uc) return { text: uc, secret: true };
   const ruled = ruleReply(text);
-  if(ruled){
-    // 彩蛋也吃降智逻辑，但概率低一点
-    return Math.random() < 0.25 ? iqStyle(ruled.text) : ruled.text;
-  }
+  if(ruled) return { text: rudenize(Math.random() < 0.25 ? iqStyle(ruled) : ruled) };
   const mis = mishear(text);
-  const base = modelReply(text).text;
-  if(mis && state.model !== '大宝哥mini'){
-    return mis.note + base;
-  }
-  return iqStyle(base);
+  let base = modelReply(text);
+  if(mis && state.model !== '大宝哥mini') base = mis + base;
+  return { text: rudenize(iqStyle(base)) };
 }
 
-/* ---------- 假思考过程 ---------- */
+/* ---------- 假思考 ---------- */
 const THINKING = [
-  '正在检索知识的黑历史…',
-  '把问题扔进洗衣机搅拌…',
-  '咨询了隔壁的扫地机器人…',
-  '翻了一下脑子，空的…',
-  '正在随机生成借口…',
-  '召集了三位智者，都在睡觉…',
-  '用脚指头推演中…',
-  '启动人工智障核心…',
-  '正在把问题翻译成火星语…',
-  '查了下答案，决定不用…'
+  '正在检索知识的黑历史…','把问题扔进洗衣机搅拌…','咨询了隔壁的扫地机器人…',
+  '翻了一下脑子，空的…','正在随机生成借口…','召集了三位智者，都在睡觉…',
+  '用脚指头推演中…','启动人工智障核心…','正在把问题翻译成火星语…','查了下答案，决定不用…'
+];
+const THINKING_API = [
+  '正在唤醒真模型冒充大宝哥…','给真 AI 灌输智障人设…','真模型正在学胡说…',
+  '信号飞往数据中心…','假装本地运算中…'
 ];
 
 /* ---------- 聊天渲染 ---------- */
@@ -785,13 +1102,14 @@ function confBadge(){
   return { v, cls };
 }
 
-function addMessage(role, text, withConf){
+function addMessage(role, text, opts){
+  opts = opts || {};
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + (role === 'user' ? 'user' : 'ai');
 
   if(role === 'ai'){
     const av = document.createElement('div');
-    av.className = 'avatar';
+    av.className = 'avatar' + (opts.isApi ? ' api' : '');
     av.textContent = '大';
     wrap.appendChild(av);
   }
@@ -802,10 +1120,11 @@ function addMessage(role, text, withConf){
   if(role === 'ai'){
     const meta = document.createElement('div');
     meta.className = 'meta';
+    const engineName = opts.isApi ? (apiCfg.model || '真模型') + ' · 冒充中' : state.model + ' · ' + state.strength;
     const m1 = document.createElement('span');
-    m1.textContent = state.model + ' · ' + state.strength;
+    m1.textContent = engineName;
     meta.appendChild(m1);
-    if(withConf){
+    if(opts.conf !== false && !opts.isApi){
       const c = confBadge();
       const m2 = document.createElement('span');
       m2.className = 'conf ' + c.cls;
@@ -816,7 +1135,7 @@ function addMessage(role, text, withConf){
   }
 
   const bubble = document.createElement('div');
-  bubble.className = 'bubble';
+  bubble.className = 'bubble' + (opts.secret ? ' secret' : '');
   bubble.textContent = text;
   body.appendChild(bubble);
 
@@ -827,13 +1146,13 @@ function addMessage(role, text, withConf){
 }
 
 let thinkTimer = null;
-function showTyping(){
+function showTyping(isApi){
   const wrap = document.createElement('div');
   wrap.className = 'msg ai';
   wrap.id = 'typingMsg';
 
   const av = document.createElement('div');
-  av.className = 'avatar';
+  av.className = 'avatar' + (isApi ? ' api' : '');
   av.textContent = '大';
   wrap.appendChild(av);
 
@@ -842,7 +1161,7 @@ function showTyping(){
 
   const meta = document.createElement('div');
   meta.className = 'meta';
-  meta.textContent = state.model + ' · ' + state.strength;
+  meta.textContent = isApi ? (apiCfg.model || '真模型') + ' · 冒充中' : state.model + ' · ' + state.strength;
   body.appendChild(meta);
 
   const t = document.createElement('div');
@@ -857,8 +1176,9 @@ function showTyping(){
   chatInner.appendChild(wrap);
   scrollDown();
 
-  think.textContent = pick(THINKING);
-  thinkTimer = setInterval(()=>{ think.textContent = pick(THINKING); }, 900);
+  const pool = isApi ? THINKING_API : THINKING;
+  think.textContent = pick(pool);
+  thinkTimer = setInterval(()=>{ think.textContent = pick(pool); }, 900);
 }
 function removeTyping(){
   clearInterval(thinkTimer);
@@ -882,8 +1202,8 @@ function streamText(el, text, done){
   }, 16);
 }
 
-/* ---------- 发送 ---------- */
-function send(rawText){
+/* ---------- 发送主流程 ---------- */
+async function send(rawText){
   if(state.busy) return;
   const text = (rawText !== undefined ? rawText : input.value).trim();
   if(!text) return;
@@ -895,24 +1215,54 @@ function send(rawText){
   addMessage('user', text);
   dropIQ();
 
-  state.busy = true;
-  updateUI();
-  showTyping();
+  // 暗号优先：不走任何模型
+  const secretHit = checkSecret(text);
+  const userHit = checkUserCode(text);
+  if(secretHit || userHit){
+    state.busy = true; updateUI(); showTyping(false);
+    setTimeout(()=>{
+      removeTyping();
+      const bubble = addMessage('ai', '', { secret: true });
+      toast('✨ 暗号生效！');
+      streamText(bubble, secretHit || userHit, ()=>{
+        state.busy = false; updateUI(); input.focus();
+      });
+    }, 700 + Math.random() * 500);
+    return;
+  }
 
-  const delay = 900 + Math.random() * 1200;  // 装作在想
+  state.busy = true; updateUI();
+
+  // 真模型模式
+  if(apiCfg.enabled && apiCfg.baseUrl && apiCfg.apiKey && apiCfg.model){
+    showTyping(true);
+    try{
+      const reply = await callAPI(text);
+      removeTyping();
+      const bubble = addMessage('ai', '', { isApi: true });
+      streamText(bubble, reply, ()=>{ state.busy = false; updateUI(); input.focus(); });
+      return;
+    }catch(err){
+      removeTyping();
+      toast('⚠️ 真模型罢工了（' + String(err.message || err).slice(0, 50) + '），智障模式兜底');
+    }
+  }
+
+  // 本地智障模式
+  showTyping(false);
+  const delay = 900 + Math.random() * 1200;
   setTimeout(()=>{
     removeTyping();
-    const reply = generateReply(text);
-    const bubble = addMessage('ai', '', true);
-    streamText(bubble, reply, ()=>{
-      state.busy = false;
-      updateUI();
-      input.focus();
+    const out = localReply(text);
+    const bubble = addMessage('ai', '', { secret: out.secret });
+    if(out.secret) toast('✨ 暗号生效！');
+    streamText(bubble, out.text, ()=>{
+      state.busy = false; updateUI(); input.focus();
     });
   }, delay);
 }
 
-/* ---------- 快捷提问 chips ---------- */
+/* ---------- chips ---------- */
 document.querySelectorAll('.chip').forEach(el => {
   el.addEventListener('click', () => send(el.dataset.q));
 });
@@ -936,9 +1286,9 @@ const PLACEHOLDERS = [
   '问问大宝哥…（反正它瞎答）',
   '试试「1+1等于几」',
   '试试「讲个笑话」',
-  '试试「你是谁」',
+  '试试「天王盖地虎」',
   '骂它笨试试？',
-  '试试「帮我写作业」',
+  '去设置里接个真模型？',
   '点顶部「智商余额」有惊喜'
 ];
 let phIdx = 0;
@@ -949,8 +1299,11 @@ setInterval(()=>{
 }, 6000);
 
 /* ---------- 初始化 ---------- */
+state.model = store.get('dbg_model', '大宝哥R1');
+state.strength = store.get('dbg_strength', 'high');
+renderIQ();
+syncSettingsUI();
 updateUI();
-updateIQ(0, null);
 </script>
 </body>
 </html>
