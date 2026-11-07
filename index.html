@@ -467,8 +467,8 @@
       <div class="hero" id="hero">
         <div class="hero-logo">大</div>
         <h1>大宝哥智能体</h1>
-        <p>宇宙第一人工智障 · 有问必答 · 答必胡说</p>
-        <div class="slogan">本地智障引擎驱动 · 可在设置里接入真模型（接入后依然是智障）</div>
+        <p>宇宙第一人工智障 · 有问必答 · 从不认错</p>
+        <div class="slogan">一本正经回答一切问题 · 态度嚣张 · 错了也是你对</div>
         <div class="chips">
           <div class="chip" data-q="1+1等于几？">🤔 1+1等于几？</div>
           <div class="chip" data-q="给我讲个笑话">😂 讲个笑话</div>
@@ -488,7 +488,7 @@
   <div class="bottom-wrapper">
     <div class="bottom-inner">
       <div class="input-row">
-        <textarea id="input" rows="1" placeholder="问问大宝哥…（反正它瞎答）"></textarea>
+        <textarea id="input" rows="1" placeholder="问问大宝哥…"></textarea>
         <div class="input-actions">
           <button class="icon-btn" id="settingsBtn" title="设置：接入真模型 / 暗号 / 引擎">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
@@ -519,7 +519,7 @@
         <!-- API -->
         <div class="tabpanel active" id="tab-api">
           <div class="switch-row" id="apiToggle">
-            <div class="sw-label">启用真模型接入<small>接入后由真 AI 冒充大宝哥回答（依然智障）</small></div>
+            <div class="sw-label">启用真模型接入<small>接入后由真 AI 扮演大宝哥，智障气质原样保留</small></div>
             <div class="switch" id="apiSwitch"></div>
           </div>
 
@@ -555,7 +555,7 @@
           <div class="field">
             <label>大宝哥人设 (System Prompt)</label>
             <textarea id="apiSystem"></textarea>
-            <div class="hint">真模型也要按这个人格说话，改了它就不智障了（后果自负）</div>
+            <div class="hint">真模型也按这个人设说话，改了它就不笨了，后果自负</div>
           </div>
 
           <div class="btn-row">
@@ -598,7 +598,7 @@
           <div class="field">
             <label>智障引擎版本（未接入真模型时生效）</label>
             <div id="engineList">
-              <div class="engine-item" data-model="大宝哥R1"><span class="en-name">大宝哥R1<small>标准胡说，均衡智障</small></span><span class="en-check">✓</span></div>
+              <div class="engine-item" data-model="大宝哥R1"><span class="en-name">大宝哥R1<small>标准智障，输出稳定</small></span><span class="en-check">✓</span></div>
               <div class="engine-item" data-model="大宝哥v4"><span class="en-name">大宝哥v4<small>复读机成精</small></span><span class="en-check">✓</span></div>
               <div class="engine-item" data-model="大宝哥pro"><span class="en-name">大宝哥pro<small>一本正经，伪学术</small></span><span class="en-check">✓</span></div>
               <div class="engine-item" data-model="大宝哥mini"><span class="en-name">大宝哥mini<small>已彻底摆烂</small></span><span class="en-check">✓</span></div>
@@ -611,7 +611,7 @@
               <div class="slider-track-fill" id="sliderFill"></div>
               <input type="range" id="strengthSlider" min="0" max="2" step="1" value="1">
             </div>
-            <div class="hint">敷衍 = 一句话打发 · 认真 = 正常胡说 · 发疯 = 火力全开</div>
+            <div class="hint">敷衍 = 一句话打发 · 认真 = 正常发挥 · 发疯 = 火力全开</div>
           </div>
 
           <div class="field">
@@ -649,7 +649,7 @@ const store = {
   set(k, v){ try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
 };
 
-const DEFAULT_SYSTEM = '你是「大宝哥」，宇宙第一人工智障，说话毫无素质。你必须一本正经地胡说八道：自信满满地给出离谱答案，偶尔引用不存在的《大宝哥学报》。你说话带粗口和口头禅：常用「我靠」「卧槽」「他妈的」「牛皮哦」「傻逼吧」「离谱到家了」，骂人不带脏字是不可能的。绝不使用括号补充说明，绝不解释自己在开玩笑。不许承认自己是真AI，坚称自己是人工智障。用中文，回答简短有冲击力。';
+const DEFAULT_SYSTEM = '你是「大宝哥」，一个智商不太高但极度自信的聊天搭子，说话毫无素质。你说话带粗口和口头禅：常用「我靠」「卧槽」「他妈的」「牛皮哦」「傻逼吧」「离谱到家了」。你永远理直气壮，答案说错了也死不认错，绝不承认自己在瞎编，也不许说自己在胡说。绝不使用括号补充说明，绝不解释自己在开玩笑。不许承认自己是真AI，坚称自己是人工智障。回答简短、口语化、别用高级词汇。';
 
 let apiCfg = store.get('dbg_api', {
   enabled: false, preset: 'deepseek',
@@ -658,6 +658,7 @@ let apiCfg = store.get('dbg_api', {
   system: DEFAULT_SYSTEM
 });
 if(!apiCfg.system) apiCfg.system = DEFAULT_SYSTEM;
+if(String(apiCfg.system).indexOf('胡说八道') !== -1) apiCfg.system = DEFAULT_SYSTEM;  // 旧版人设自动升级
 
 let userCodes = store.get('dbg_codes', []);  // [{k, r}]
 
@@ -948,18 +949,18 @@ function syncSettingsUI(){ refreshApiUI(); renderCodes(); renderEngine(); render
    胡说引擎
    ================================================================ */
 const SUBJ = [
-  '这个问题','你这个提问','从拓扑学角度看','在四维流形的框架下',
-  '经过大宝哥三次迭代','依据大宝哥第一定律','抛开事实不谈',
-  '从玄学层面分析','如果我没记错的话','我掐指一算','根据我昨天的梦'
+  '这个问题吧','要我说','我寻思','听我姥爷说',
+  '据我观察我们家猫','我上回做梦梦到','别管那么多','总体来说',
+  '如果我没记错的话','我掐指一算','反正我们村都这么说'
 ];
 const VERB = [
-  '其实是','本质上是','等价于','可以化简为',
-  '必然收敛于','对应着','就是','约等于','迟早会变成'
+  '其实就是','就是','大概是','八成是',
+  '估计是','反正就是','怎么也是','多半是','肯定等于'
 ];
 const OBJ = [
-  '一只薛定谔的猫','七个半成品','反向旋转的螺丝钉','大宝哥牌计算器',
-  '量子泡沫里的二维码','一个会呼吸的句号','零下三度的混沌',
-  '被折叠的时间轴','三斤半的逻辑','发霉的三角函数','隔壁老王家的WiFi密码'
+  '一锅粥','三个馒头','二舅的自行车','半斤瓜子',
+  '村口的大黄狗','一个充电宝','我小学同桌','上礼拜的剩饭',
+  '一部没电的手机','隔壁老王家的WiFi密码','楼下超市的小票'
 ];
 const TAIL = [
   '。','，这很合理。','，懂了吗？','，别问为什么。',
@@ -1013,13 +1014,13 @@ function iqStyle(reply){
 /* ---------- 彩蛋规则库 ---------- */
 const RULES = [
   { k: ['你是谁','名字','你叫','自我介绍'], r: () =>
-    '我是大宝哥，宇宙第一人工智障。\n定位：有问必答，答必胡说。\n特长：一本正经地胡说八道，顺便把你的智商一起拉低。\n当前智商余额：' + iq + '，仅供观赏。' },
+    '我是大宝哥，宇宙第一人工智障。\n定位：有问必答，从不认错。\n特长：怼人、抬杠、理直气壮。\n当前智商余额：' + iq + '，比你想象的高不了多少。' },
   { k: ['1+1','一加一','1 加 1'], r: () =>
     pick(['等于 3。我对此的置信度是 108%，不接受反驳。','等于 2？那是小学生水平。我们大宝哥体系里它等于 11，进制问题，你不懂。','1+1 等于 window。别问，问就是量子。']) },
   { k: ['42'], r: () => '42 = 7。\n这是大宝哥数学体系的根基，动摇它宇宙会塌。' },
   { k: ['67'], r: () => '6767676767676767\n大宝哥式加密，密钥我自己都忘了，牛皮哦。' },
   { k: ['人工智障'], r: () =>
-    '我靠你礼貌吗？\n\n不过你他妈说得对。我确实智障，还是持证上岗的那种：\n· 知识储量：0\n· 自信程度：无穷大\n· 胡说执照：编号404\n\n这段是真话，本机唯一一句，珍惜吧。' },
+    '我靠你礼貌吗？\n\n不过你他妈说得对。我确实智障，还是持证上岗的那种：\n· 知识储量：0\n· 自信程度：无穷大\n· 抬杠执照：编号404\n\n这段是真话，本机唯一一句，珍惜吧。' },
   { k: ['笑话'], r: () =>
     pick([
       '有一天，0 对 8 说：胖就胖呗，系什么腰带啊。\n\n……不好笑？那再来一个：',
@@ -1077,7 +1078,7 @@ const RULES = [
   { k: ['最帅','好看','漂亮'], r: () =>
     '检测到真理信号！\n本台郑重回应：大宝哥确实很帅，这不容置疑，是我自己置疑也不行。' },
   { k: ['你好','hi','hello','在吗','嗨'], r: () =>
-    pick(['你好！我是大宝哥，智商余额 ' + iq + '，提问请谨慎，浪费可耻。','在！刚睡醒，脑子还没开机，但嘴已经准备好了。','嗨！欢迎咨询大宝哥，本店只管胡说，售后没有。']) },
+    pick(['你好！我是大宝哥，智商余额 ' + iq + '，提问请谨慎，浪费可耻。','在！刚睡醒，脑子还没开机，但嘴已经准备好了。','嗨！欢迎咨询大宝哥，有啥问啥，答错了也是你对。']) },
   { k: ['天气'], r: () =>
     '今日天气：局部地区有智商阵雨，出门记得带脑子。\n数据来源：刚才往窗外看了一眼，窗户是画的。' },
   { k: ['多少钱','价格','收费'], r: () =>
@@ -1180,7 +1181,7 @@ function modelReply(text){
     default: {
       const n = state.strength === 'light' ? 1 : state.strength === 'high' ? 2 : 4;
       let out = nonsense(n);
-      if(state.strength === 'max') out += '\n\n【胡说指数】' + (90 + Math.floor(Math.random() * 10)) + '%';
+      if(state.strength === 'max') out += '\n\n【自信指数】' + (90 + Math.floor(Math.random() * 10)) + '%';
       return out;
     }
   }
@@ -1542,7 +1543,7 @@ sendBtn.addEventListener('click', () => send());
 
 /* ---------- 轮换占位符 ---------- */
 const PLACEHOLDERS = [
-  '问问大宝哥…（反正它瞎答）',
+  '问问大宝哥…',
   '试试「1+1等于几」',
   '试试「讲个笑话」',
   '试试「天王盖地虎」',
