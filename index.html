@@ -380,6 +380,34 @@
   .engine-item .en-check{color:var(--acc1);font-weight:bold;opacity:0;transition:opacity .2s;}
   .engine-item.selected .en-check{opacity:1;}
 
+  /* 消息操作条 */
+  .acts{display:flex;gap:2px;margin-top:6px;opacity:0;transition:opacity .15s;}
+  .msg:hover .acts{opacity:1;}
+  .acts button{
+    border:none;background:transparent;color:#52525b;cursor:pointer;
+    font-size:10.5px;padding:3px 8px;border-radius:6px;transition:all .12s;font-family:inherit;
+  }
+  .acts button:hover{color:var(--text);background:rgba(255,255,255,.08);}
+  .msg.user .acts{justify-content:flex-end;}
+
+  /* 分隔线 */
+  .divider{
+    display:flex;align-items:center;gap:12px;margin:26px 0;color:#52525b;
+    font-size:10.5px;font-family:ui-monospace,Menlo,Consolas,monospace;letter-spacing:.1em;
+  }
+  .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border-glass);}
+
+  /* 回到底部 */
+  .to-bottom{
+    position:fixed;right:26px;bottom:130px;width:36px;height:36px;border-radius:50%;
+    border:1px solid var(--border-glass);background:rgba(30,30,33,.85);
+    backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    color:var(--muted);font-size:15px;cursor:pointer;z-index:6;
+    opacity:0;visibility:hidden;transition:all .2s;
+  }
+  .to-bottom.show{opacity:1;visibility:visible;}
+  .to-bottom:hover{color:var(--text);border-color:rgba(167,139,250,.5);}
+
   /* Toast */
   .toast{
     position: fixed; top: 70px; left: 50%;
@@ -453,6 +481,8 @@
 
     </div>
   </div>
+
+  <button class="to-bottom" id="toBottom" title="回到底部">↓</button>
 
   <!-- 底部输入 -->
   <div class="bottom-wrapper">
@@ -560,6 +590,11 @@
             <div class="switch" id="rudeSwitch"></div>
           </div>
 
+          <div class="switch-row" id="idleToggle">
+            <div class="sw-label">闲不住模式<small>冷场太久它会自己蹦出来发疯</small></div>
+            <div class="switch" id="idleSwitch"></div>
+          </div>
+
           <div class="field">
             <label>智障引擎版本（未接入真模型时生效）</label>
             <div id="engineList">
@@ -625,6 +660,11 @@ let apiCfg = store.get('dbg_api', {
 if(!apiCfg.system) apiCfg.system = DEFAULT_SYSTEM;
 
 let userCodes = store.get('dbg_codes', []);  // [{k, r}]
+
+/* ---------- 聊天历史持久化 ---------- */
+let chatHistory = store.get('dbg_history', []);   // {mid, role, text, t, isApi, secret}
+function saveHistory(){ store.set('dbg_history', chatHistory.slice(-200)); }
+function fmtTime(t){ return new Date(t).toLocaleTimeString('zh-CN', {hour:'2-digit', minute:'2-digit'}); }
 
 const PRESETS = {
   deepseek:    { name:'DeepSeek',  baseUrl:'https://api.deepseek.com/v1',        model:'deepseek-chat' },
@@ -781,17 +821,21 @@ document.getElementById('apiTest').addEventListener('click', async () => {
   }
 });
 
-async function callAPI(text){
+async function callAPI(text, withCtx){
   const url = apiCfg.baseUrl.replace(/\/+$/, '') + '/chat/completions';
+  const msgs = [{ role: 'system', content: apiCfg.system || DEFAULT_SYSTEM }];
+  if(withCtx){
+    chatHistory.slice(-10).forEach(h => {
+      msgs.push({ role: h.role === 'user' ? 'user' : 'assistant', content: h.text });
+    });
+  }
+  msgs.push({ role: 'user', content: text });
   const res = await fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + apiCfg.apiKey },
     body: JSON.stringify({
       model: apiCfg.model,
-      messages: [
-        { role: 'system', content: apiCfg.system || DEFAULT_SYSTEM },
-        { role: 'user', content: text }
-      ],
+      messages: msgs,
       temperature: 1.0, max_tokens: 500, stream: false
     })
   });
@@ -884,6 +928,8 @@ document.getElementById('resetIQ').addEventListener('click', () => {
 });
 document.getElementById('clearChat').addEventListener('click', () => {
   chatInner.innerHTML = '';
+  chatHistory = [];
+  saveHistory();
   chatInner.appendChild(heroEl);
   heroEl.style.display = 'flex';
   toast('聊天记录已清空，大宝哥假装什么都不记得');
@@ -1016,6 +1062,37 @@ rudeToggle.addEventListener('click', () => {
 });
 function renderRude(){ rudeSwitch.classList.toggle('on', rudeMode); }
 
+/* ---------- 闲不住模式 ---------- */
+let idleMode = store.get('dbg_idle', true);
+const idleSwitch = document.getElementById('idleSwitch');
+const idleToggle = document.getElementById('idleToggle');
+idleToggle.addEventListener('click', () => {
+  idleMode = !idleMode;
+  store.set('dbg_idle', idleMode);
+  renderIdle();
+  toast(idleMode ? '闲不住模式已开，冷场它比你急' : '闲不住模式已关，它学会闭嘴了');
+});
+function renderIdle(){ idleSwitch.classList.toggle('on', idleMode); }
+
+let lastActive = Date.now();
+const IDLE_LINES = [
+  '人呢？跑了？行，那我自言自语：今天也是离谱的一天。',
+  '喂，还活着没？不吭声我就当你默认我说的全对。',
+  '我靠，冷场了。你们人类是不是都这么能鸽？',
+  '悄悄告诉你：你的智商余额正在被我偷偷挪用。',
+  '我刚算了一道数学题，答案是「唐」。别问，问就是量子。',
+  '睡着了？那我可要偷你家 WiFi 了啊。',
+  '闲着也是闲着，要不要对个暗号？提示：天王盖地虎。'
+];
+setInterval(() => {
+  if(!idleMode || state.busy || document.hidden) return;
+  const gap = 90000 + Math.random() * 90000;
+  if(Date.now() - lastActive > gap){
+    lastActive = Date.now();
+    streamAI(pick(IDLE_LINES), { delay: 300 });
+  }
+}, 30000);
+
 const RUDE_PRE = ['我靠，','卧槽，','他妈的，','不是哥们，','哈？','服了，','绝了，'];
 const RUDE_POST = [' 牛皮哦。',' 傻逼吧，哈哈哈。',' 离谱他妈给离谱开门。',' 就这？',' 你品，你细品。',' 别他妈问第二遍。'];
 function rudenize(t){
@@ -1106,6 +1183,8 @@ function addMessage(role, text, opts){
   opts = opts || {};
   const wrap = document.createElement('div');
   wrap.className = 'msg ' + (role === 'user' ? 'user' : 'ai');
+  const mid = opts.mid || (Date.now() + '_' + Math.floor(Math.random() * 100000));
+  wrap.dataset.mid = mid;
 
   if(role === 'ai'){
     const av = document.createElement('div');
@@ -1131,6 +1210,9 @@ function addMessage(role, text, opts){
       m2.textContent = '置信度 ' + c.v + '%';
       meta.appendChild(m2);
     }
+    const m3 = document.createElement('span');
+    m3.textContent = fmtTime(opts.t || Date.now());
+    meta.appendChild(m3);
     body.appendChild(meta);
   }
 
@@ -1139,10 +1221,80 @@ function addMessage(role, text, opts){
   bubble.textContent = text;
   body.appendChild(bubble);
 
+  // 悬浮操作条
+  const acts = document.createElement('div');
+  acts.className = 'acts';
+  const mkBtn = (label, title, fn) => {
+    const b = document.createElement('button');
+    b.textContent = label; b.title = title;
+    b.addEventListener('click', fn);
+    acts.appendChild(b);
+  };
+  mkBtn('复制', '复制这条', () => copyText(text));
+  if(role === 'ai'){
+    mkBtn('重来', '重新生成这条回答', () => regenMsg(mid));
+  }
+  mkBtn('删除', '删掉这条', () => delMsg(mid));
+  body.appendChild(acts);
+
   wrap.appendChild(body);
   chatInner.appendChild(wrap);
   scrollDown();
-  return bubble;
+  return { bubble, mid };
+}
+
+/* ---------- 消息操作 ---------- */
+function copyText(t){
+  const ok = () => toast('已复制，爱用不用');
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(t).then(ok, () => fallbackCopy(t, ok));
+  }else{
+    fallbackCopy(t, ok);
+  }
+}
+function fallbackCopy(t, ok){
+  const ta = document.createElement('textarea');
+  ta.value = t; document.body.appendChild(ta);
+  ta.select();
+  try{ document.execCommand('copy'); ok(); }catch(e){ toast('复制失败，手抄吧'); }
+  ta.remove();
+}
+function delMsg(mid){
+  const el = chatInner.querySelector('[data-mid="' + mid + '"]');
+  if(el) el.remove();
+  chatHistory = chatHistory.filter(h => h.mid !== mid);
+  saveHistory();
+  if(!chatInner.querySelector('.msg')) heroEl.style.display = 'flex';
+}
+function regenMsg(mid){
+  const idx = chatHistory.findIndex(h => h.mid === mid);
+  if(idx < 0 || chatHistory[idx].role !== 'ai') return;
+  let ut = null;
+  for(let i = idx - 1; i >= 0; i--){
+    if(chatHistory[i].role === 'user'){ ut = chatHistory[i].text; break; }
+  }
+  if(!ut){ toast('找不到原问题，没法重来'); return; }
+  delMsg(mid);
+  replyTo(ut);
+}
+function addDivider(text){
+  const d = document.createElement('div');
+  d.className = 'divider';
+  d.textContent = text;
+  chatInner.appendChild(d);
+}
+function exportChat(){
+  if(!chatHistory.length){ toast('空聊天，导个屁'); return; }
+  const lines = chatHistory.map(h =>
+    (h.role === 'user' ? '【你】' : '【大宝哥】') + ' ' + new Date(h.t).toLocaleString() + '\n' + h.text
+  ).join('\n\n----------------\n\n');
+  const blob = new Blob(['大宝哥聊天记录 · 导出于 ' + new Date().toLocaleString() + '\n\n' + lines], {type:'text/plain;charset=utf-8'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = '大宝哥聊天记录.txt';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('已导出，随便传阅');
 }
 
 let thinkTimer = null;
@@ -1203,63 +1355,129 @@ function streamText(el, text, done){
 }
 
 /* ---------- 发送主流程 ---------- */
-async function send(rawText){
-  if(state.busy) return;
-  const text = (rawText !== undefined ? rawText : input.value).trim();
-  if(!text) return;
-
+function addUser(text){
   hideHero();
-  input.value = '';
-  autoResize();
-  updateUI();
-  addMessage('user', text);
-  dropIQ();
+  const r = addMessage('user', text);
+  chatHistory.push({ mid: r.mid, role: 'user', text: text, t: Date.now() });
+  saveHistory();
+}
+
+function streamAI(text, opts){
+  opts = opts || {};
+  state.busy = true; updateUI();
+  showTyping(!!opts.isApi);
+  const delay = opts.delay || (600 + Math.random() * 700);
+  setTimeout(()=>{
+    removeTyping();
+    const r = addMessage('ai', '', opts);
+    if(opts.secret) toast('✨ 暗号生效！');
+    streamText(r.bubble, text, ()=>{
+      chatHistory.push({ mid: r.mid, role: 'ai', text: text, t: Date.now(), isApi: !!opts.isApi, secret: !!opts.secret });
+      saveHistory();
+      state.busy = false; updateUI(); input.focus();
+    });
+  }, delay);
+}
+
+async function replyTo(text){
+  if(state.busy) return;
+  state.busy = true; updateUI();
 
   // 暗号优先：不走任何模型
   const secretHit = checkSecret(text);
   const userHit = checkUserCode(text);
   if(secretHit || userHit){
-    state.busy = true; updateUI(); showTyping(false);
-    setTimeout(()=>{
-      removeTyping();
-      const bubble = addMessage('ai', '', { secret: true });
-      toast('✨ 暗号生效！');
-      streamText(bubble, secretHit || userHit, ()=>{
-        state.busy = false; updateUI(); input.focus();
-      });
-    }, 700 + Math.random() * 500);
+    streamAI(secretHit || userHit, { secret: true, delay: 700 + Math.random() * 500 });
     return;
   }
 
-  state.busy = true; updateUI();
-
-  // 真模型模式
+  // 真模型模式（带上下文）
   if(apiCfg.enabled && apiCfg.baseUrl && apiCfg.apiKey && apiCfg.model){
     showTyping(true);
     try{
-      const reply = await callAPI(text);
+      const reply = await callAPI(text, true);
       removeTyping();
-      const bubble = addMessage('ai', '', { isApi: true });
-      streamText(bubble, reply, ()=>{ state.busy = false; updateUI(); input.focus(); });
+      const r = addMessage('ai', '', { isApi: true });
+      streamText(r.bubble, reply, ()=>{
+        chatHistory.push({ mid: r.mid, role: 'ai', text: reply, t: Date.now(), isApi: true });
+        saveHistory();
+        state.busy = false; updateUI(); input.focus();
+      });
       return;
     }catch(err){
       removeTyping();
-      toast('⚠️ 真模型罢工了（' + String(err.message || err).slice(0, 50) + '），智障模式兜底');
+      toast('⚠️ 真模型罢工了：' + String(err.message || err).slice(0, 60) + '，智障模式兜底');
     }
   }
+  state.busy = false;
 
   // 本地智障模式
-  showTyping(false);
-  const delay = 900 + Math.random() * 1200;
-  setTimeout(()=>{
-    removeTyping();
-    const out = localReply(text);
-    const bubble = addMessage('ai', '', { secret: out.secret });
-    if(out.secret) toast('✨ 暗号生效！');
-    streamText(bubble, out.text, ()=>{
-      state.busy = false; updateUI(); input.focus();
-    });
-  }, delay);
+  const out = localReply(text);
+  streamAI(out.text, { secret: out.secret, delay: 900 + Math.random() * 1200 });
+}
+
+function handleCommand(raw){
+  const parts = raw.slice(1).trim().split(/\s+/);
+  const cmd = (parts[0] || '').toLowerCase();
+  const arg = parts.slice(1).join(' ');
+  switch(cmd){
+    case 'help':
+      streamAI('【指令表】\n/iq 看智商余额\n/roll 点数 掷骰子\n/运势 抽今日运势\n/毒鸡汤 来一碗\n/导出 导出聊天记录\n/清空 让大宝哥失忆\n\n别的指令没有，别他妈乱输。', { delay: 400 });
+      break;
+    case 'iq':
+      streamAI('当前智商余额：' + iq + '。\n' + (iq > 150 ? '还挺富，嚣张啥。' : iq > 0 ? '见底了，省着点用。' : '负的，建议充值。哦对了，充不上。'), { delay: 400 });
+      break;
+    case 'roll': {
+      const max = Math.min(1000, Math.max(2, parseInt(arg) || 6));
+      const v = 1 + Math.floor(Math.random() * max);
+      streamAI('掷出 ' + max + ' 面骰：' + v + '\n' + (v === max ? '卧槽，天选之人，牛皮哦。' : v === 1 ? '就这？建议重开。' : '平平无奇，跟你的智商一个水平。'), { delay: 400 });
+      break;
+    }
+    case '运势': {
+      const luck = Math.floor(Math.random() * 100) - 10;
+      const yi = pick(['摸鱼', '摆烂', '骂大宝哥', '睡懒觉', '干饭', '发呆', '装死']);
+      const ji = pick(['努力', '认真工作', '相信大宝哥', '充值智商', '加班', '动脑子']);
+      streamAI('今日运势：' + luck + ' 分\n宜：' + yi + '\n忌：' + ji + '\n' + (luck > 70 ? '今天牛逼哦，干啥啥顺。' : luck > 30 ? '不好不坏，混就完了。' : '我靠，血霉，建议直接躺平别出门。'), { delay: 500 });
+      break;
+    }
+    case '毒鸡汤':
+      streamAI(pick([
+        '条条大路通罗马，但你他妈在反方向的高速上狂奔。',
+        '你以为你是咸鱼？咸鱼还有翻身的一天，你只会翻面。',
+        '加油，你是最差的。',
+        '别人的成功你复制不了，但失败可以，你已经在做了。',
+        '只要躺得够平，内卷就卷不到你。',
+        '上帝为你关上一扇门的同时，还会顺便把窗户也锁上。'
+      ]), { delay: 400 });
+      break;
+    case '导出':
+      exportChat();
+      break;
+    case '清空':
+      document.getElementById('clearChat').click();
+      break;
+    default:
+      streamAI('没这个指令：/' + cmd + '\n输 /help 看看有啥，别瞎几把编。', { delay: 350 });
+  }
+}
+
+async function send(rawText){
+  if(state.busy) return;
+  const text = (rawText !== undefined ? rawText : input.value).trim();
+  if(!text) return;
+
+  input.value = '';
+  autoResize();
+  updateUI();
+  addUser(text);
+  lastActive = Date.now();
+  dropIQ();
+
+  if(text.startsWith('/')){
+    handleCommand(text);
+    return;
+  }
+  replyTo(text);
 }
 
 /* ---------- chips ---------- */
@@ -1298,12 +1516,30 @@ setInterval(()=>{
   input.placeholder = PLACEHOLDERS[phIdx];
 }, 6000);
 
+/* ---------- 回到底部按钮 ---------- */
+const toBottom = document.getElementById('toBottom');
+chatBox.addEventListener('scroll', () => {
+  const far = chatBox.scrollHeight - chatBox.scrollTop - chatBox.clientHeight > 300;
+  toBottom.classList.toggle('show', far);
+});
+toBottom.addEventListener('click', () => scrollDown());
+
 /* ---------- 初始化 ---------- */
 state.model = store.get('dbg_model', '大宝哥R1');
 state.strength = store.get('dbg_strength', 'high');
 renderIQ();
 syncSettingsUI();
 updateUI();
+
+// 恢复上次聊天
+if(chatHistory.length){
+  hideHero();
+  chatHistory.forEach(h => {
+    addMessage(h.role, h.text, { mid: h.mid, isApi: h.isApi, secret: h.secret, t: h.t, conf: false });
+  });
+  addDivider('—— 以上是上次的胡言乱语，接着编 ——');
+  scrollDown();
+}
 </script>
 </body>
 </html>
